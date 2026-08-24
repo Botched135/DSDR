@@ -1,0 +1,55 @@
+Draw Steel Directors Retainer
+
+Dependencies
+	SDL3
+	imgui (No need for 3d backend, we can use SDL3's internal)
+	fmt
+	doctest
+	ankerl::unordered_dense::map with ankerl::unordered_dense::hash seems like the best for string insert and find
+	toml++
+	reflect-cpp (maybe)
+	Maybe dataframe, as it would be nice to search for different enums, e.g. tags, types, roles etc.
+	
+Needs to have
+	Example database .toml file (Solo, group with standard & minion)
+	.toml parser 
+	Enemy database
+	Changable hero count, victory and level
+	Load database from file
+	Load encounters from file
+	Visualize enemy health, status, free strike damage
+	Ability tracker (villian actions, malice actions)
+	Visualize, calculate and use malice
+	Turn manager (which side is it, who has gone and who hasnt, reset for round)
+	Minion groups
+	Restart combat (with confirmation)
+	
+	
+	
+Nice to have
+	Trying out modules?
+	Adding characters in run time
+	Load multiple encounter files
+	Tabs for encounters
+	Overriding enemy stats
+	Encounter evaluator
+	Enemies & Allies
+	Malice feature picking
+	Traits that increases potency etc. can be activated
+	Mac support
+	Markings that makes the characteristics like R<4 stand out
+	Heroes stamina & status
+	Goto abilities if you click on them within another ability
+	
+	
+	
+
+ideas:
+
+Abilities could probably be stored in a variant
+Abilities can set buffs on targets, which needs to be added specifically
+
+
+Notes:
+Round: full cycle
+Turn: each individual
