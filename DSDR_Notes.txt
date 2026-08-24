@@ -9,6 +9,7 @@ Dependencies
 	toml++
 	reflect-cpp (maybe)
 	Maybe dataframe, as it would be nice to search for different enums, e.g. tags, types, roles etc.
+	RapidFuzz for fuzzy search
 	
 Needs to have
 	Example database .toml file (Solo, group with standard & minion)
