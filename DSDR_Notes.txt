@@ -10,6 +10,7 @@ Dependencies
 	reflect-cpp (maybe)
 	Maybe dataframe, as it would be nice to search for different enums, e.g. tags, types, roles etc.
 	RapidFuzz for fuzzy search
+	!!! CHECK UP ON LINCENSES !!!
 	
 Needs to have
 	Example database .toml file (Solo, group with standard & minion)
