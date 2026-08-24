@@ -1,0 +1,62 @@
+title = "Enemy Database"
+
+base_malice_actions = [
+{ name = "Brutal Effectiveness", min_cost = 3, effect = "The monster digs into the enemy's weak spot. The next ability the monster uses with a potency has that potency increased by 1."},
+{ name = "Malicious Strike", min_cost=5, extra_cost=true, cooldown={global=true, count=2}, effect = "The monster pours all their animosity into their attack. their next strike deals extra damage to one target equal to the monster's highest characteristic score. the extra damage increases by 1 for each additional Malice spent on this feature (to a maximum of three times the monster's highest characteristic). This feature can't be used two rounds in a row, even by different monsters"} 
+]
+
+[Ajax the Invincible]
+ID="AjaxSolo"
+CreatureOrg = "Solo"
+CreatureRole = "Solo"
+EncounterValue = 156
+Death=-350
+Types = ["Human", "Humanoid"]
+Level = 11
+Size = "1L"
+Speed = 7
+Stamina = 700
+Stability = 2
+FreeStrike = 11
+Immunity = [] # Most of these should be able to be defaulted
+Weakness = []
+Movement = ["Flying", "Hover"]
+Characteristics = { Might = 5, Agility = 4, Reason = 5, Intuition = 5, Presence = 4}
+TurnsPerRound = 3
+TriggersPerRound = 3
+EndEffect = { damage = 20, count = 2 } 
+Abilities = [
+{ name = "Blade of the Gol King", powerRoll = "2d10+5", tags = ["Charge", "Magic", "Melee", "Strike"], range=[{ type = "Melee", distance=1}], 
+  target="Two creatures or objects", actionType = "Main", isSignature=true,
+  lowTier="{16 damage; M<4 target loses 1d3 Recoveries", midTier="22 damage; M<5 target loses 1d3 Recoveries", highTier="26 damage; M<6 prone and target loses 1d3 Recoveries", 
+  effect="Ajax shifts up to 2 squares between striking each target", extra_cost={type="Malice", cost="1+", effect="Ajax can strike one additional target for each Malice spent"},
+  { name = "Who's Hesitating?", trigger = "A creature uses the Hesitation is Weakness ability", range= { type="Self"}, target = "Self", effect = "Ajax shifts up to his speed and can make a free strike. If the target has R<4, this free strike also makes them wekened until the end of their next turn."}
+]
+VillianActions = # Each only one per encounter and only one villian action per turn
+[
+{ name = "Phoenix Wing King", powerRoll = "2d10+5", tags = ["Area", "Magic", "Weapon"], range={type="Burst", distance=5}, 
+  target="Each enemy in the area",
+  lowTier="11 fire damage; A<4 weakened (save ends)", midTier="17 fire damage; A<5 weakened (save ends)", highTier="21 fire damage; A<6 weakened (save ends)", 
+  effect="Ajax flies at high speed to cut through each target, then appears in an unoccupied space within distance"
+},
+{ name = "I've Learned Their Tricks", range = {type="Burst", distance = 3}, 
+  target = "Each enemy in the area", 
+  effect= "Ajax uses the shadow elf eclipse's technique to reduce each target's surges to 0. Additionally, until end of the round, Ajax ignores edges and double edges on any target's abilities, and ignores any nondamaging effects of any target's damage-dealing abilities.", 
+  special="This villian action can be replaced with a villian action from a creature any target has previously encountered"
+},
+{ name = "Awe of the Iron Crown", tags = ["Area", "Magic"], range={type="Burst", distance=7}, target="Each enemy in the area",
+  effect= "Each target who has I<5 is knocked prone and can't stand until Ajax deals damage to them. For each target not knocked prone, Ajax can move up to his speed toward that target and use Blade of the Gol King against them"
+}
+]
+MaliceActions = [] # Solo monsters does not get Malice actions from their group
+Traits = 
+[
+	{ name = "Tactical Stance", condition="StartOfRound",}
+	{ name = "I'm Not Done Yet", condition="Stamina<0", effect="Ajax is bleeding, he can choose any two options from his tactical Stance trait each round, and the Director agains 2 additional Malice per round"}
+] 
+
+
+
+
+[Undead]
+MaliceActions
