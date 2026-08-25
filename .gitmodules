@@ -1,0 +1,21 @@
+[submodule "3rd_party_libs/unordered_dense"]
+	path = 3rd_party_libs/unordered_dense
+	url = https://github.com/martinus/unordered_dense.git
+[submodule "3rd_party_libs/imgui"]
+	path = 3rd_party_libs/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "3rd_party_libs/SDL"]
+	path = 3rd_party_libs/SDL
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "3rd_party_libs/tomlplusplus"]
+	path = 3rd_party_libs/tomlplusplus
+	url = https://github.com/marzer/tomlplusplus.git
+[submodule "3rd_party_libs/fmt"]
+	path = 3rd_party_libs/fmt
+	url = https://github.com/fmtlib/fmt.git
+[submodule "3rd_party_libs/doctest"]
+	path = 3rd_party_libs/doctest
+	url = https://github.com/doctest/doctest.git
+[submodule "3rd_party_libs/zadeh"]
+	path = 3rd_party_libs/zadeh
+	url = https://github.com/atom-community/zadeh.git
