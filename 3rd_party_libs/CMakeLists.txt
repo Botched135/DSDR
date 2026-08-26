@@ -1,7 +1,0 @@
-add_subdirectory(doctest)
-add_subdirectory(fmt)
-add_subdirectory(imgui)
-add_subdirectory(SDL)
-add_subdirectory(tomlplusplus)
-add_subdirectory(unordered_dense)
-add_subdirectory(zadeh)
