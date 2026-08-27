@@ -25,11 +25,12 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     const float main_scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
     /* Create the window */
     
-    if (!SDL_CreateWindowAndRenderer("Director Retainer", static_cast<int>(800), static_cast<int>(600), SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN, &window, &renderer)) {
+    if (!SDL_CreateWindowAndRenderer("Director Retainer", static_cast<int>(800*main_scale), static_cast<int>(600*main_scale), SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         SDL_Log("Couldn't create window and renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
+    //SDL_Log("What is going on?\n");
    // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -41,8 +42,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
     // Setup scaling
     ImGuiStyle& style = ImGui::GetStyle();
-    style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
-    style.FontScaleDpi = main_scale;        // Set initial font scale. (in docking branch: using io.ConfigDpiScaleFonts=true automatically overrides this for every window depending on the current monitor)
+    //style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
+    //style.FontScaleDpi = main_scale;        // Set initial font scale. (in docking branch: using io.ConfigDpiScaleFonts=true automatically overrides this for every window depending on the current monitor)
 
     // Setup Platform/Renderer backends
     ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
@@ -90,7 +91,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
-    /*
+    
     int w = 0, h = 0;
     float x, y;
     const float scale = 4.0f;
@@ -101,13 +102,13 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     x = ((w / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(message.c_str())) / 2;
     y = ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) / 2;
 
-    // Draw the message 
+    // Draw the message
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDebugText(renderer, x, y, message.c_str());
     SDL_RenderPresent(renderer);
-    */
+    
     if (SDL_GetWindowFlags(window) & SDL_WINDOW_MINIMIZED)
     {
         SDL_Delay(10);

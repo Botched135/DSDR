@@ -13,8 +13,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 include(FetchContent)
 
-#add_subdirectory(imgui)
-
 FetchContent_Declare(
     SDL EXCLUDE_FROM_ALL
     GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
@@ -86,6 +84,5 @@ target_link_libraries(imgui PUBLIC SDL3::SDL3)
 add_library(utility_headers INTERFACE)
 target_include_directories(utility_headers INTERFACE ${PROJECT_SOURCE_DIR})
 
-add_subdirectory(3rd_party_libs)
 add_subdirectory(director_retainer)
 add_subdirectory(tests)
