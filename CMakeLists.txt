@@ -7,8 +7,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "/Ox") # This might only be for windows
 
 
 # Setting 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>" CACHE INTERNAL "")
 
 
 include(FetchContent)
@@ -82,7 +81,7 @@ target_link_libraries(imgui PUBLIC SDL3::SDL3)
 
 
 add_library(utility_headers INTERFACE)
-target_include_directories(utility_headers INTERFACE ${PROJECT_SOURCE_DIR})
+target_include_directories(utility_headers INTERFACE ${PROJECT_SOURCE_DIR}/utility)
 
 add_subdirectory(director_retainer)
 add_subdirectory(tests)

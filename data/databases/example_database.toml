@@ -5,10 +5,12 @@ base_malice_actions = [
 { name = "Malicious Strike", min_cost=5, extra_cost=true, cooldown={global=true, count=2}, effect = "The monster pours all their animosity into their attack. their next strike deals extra damage to one target equal to the monster's highest characteristic score. the extra damage increases by 1 for each additional Malice spent on this feature (to a maximum of three times the monster's highest characteristic). This feature can't be used two rounds in a row, even by different monsters"} 
 ]
 
-[Ajax the Invincible]
+[[Monsters]]
+name="Ajax the Invincible"
 ID="AjaxSolo"
 CreatureOrg = "Solo"
 CreatureRole = "Solo"
+CreatureGroup = "Human"
 EncounterValue = 156
 Death=-350
 Types = ["Human", "Humanoid"]
@@ -51,12 +53,17 @@ VillianActions = # Each only one per encounter and only one villian action per t
 MaliceActions = [] # Solo monsters does not get Malice actions from their group
 Traits = 
 [
-	{ name = "Tactical Stance", condition="StartOfRound",}
+	{ name = "Tactical Stance", condition="StartOfRound", effect="Switch stances between"}
 	{ name = "I'm Not Done Yet", condition="Stamina<0", effect="Ajax is bleeding, he can choose any two options from his tactical Stance trait each round, and the Director agains 2 additional Malice per round"}
 ] 
 
 
+[[Monsters]]
 
 # Need to have monsters and group as seperate entries
-[Undead]
-MaliceActions
+[[Group]]
+name="Undead"
+malice_actions=
+[
+  { name="Ravenous Horde", min_cost=2, range={type="Special", distance=0}, cooldown={global=true, count=2}, effect=""}
+]

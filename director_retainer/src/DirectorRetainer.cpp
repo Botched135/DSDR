@@ -10,6 +10,9 @@
 #include "imgui_impl_sdl3.h"
 #include "imgui_impl_sdlrenderer3.h"
 
+#include "Data/DSEnums.hpp"
+#include "MonsterDB.hpp"
+
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -48,6 +51,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
     ImGui_ImplSDLRenderer3_Init(renderer);
 
+
+    const auto result = DSDR::LoadMDBFromFile("./databases/example_database.toml").value_or(-1);
+    SDL_Log("%i\n", result);
     return SDL_APP_CONTINUE;
 }
 
