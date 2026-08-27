@@ -160,21 +160,23 @@ namespace DSDR
         {
             Heroic,
             Malice
-        }
+        };
     }
 
     namespace Trait
     {
-        enum class Condition
-        {
-            StartOfTurn,
-            EndOfTurn,
-            StartOfRound,
-            EndOfRound,
-            StartOfCombat,
-            Special
-        }
+
     }
+
+    enum class Triggers // This is for actions like some malice actions that triggers at some later point
+    {
+        StartOfTurn,
+        EndOfTurn,
+        StartOfRound,
+        EndOfRound,
+        StartOfEncounter,
+        Special
+    };
 
     enum class DamageTypes
     {
