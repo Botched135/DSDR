@@ -22,7 +22,7 @@ static ImGuiIO* io = nullptr;
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
-    const float main_scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay()); // this is 0 for some reason
+    const float main_scale = 1.0f;//SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay()); // this is 0 for some reason
     /* Create the window */
     
     if (!SDL_CreateWindowAndRenderer("Director Retainer", static_cast<int>(800*main_scale), static_cast<int>(600*main_scale), SDL_WINDOW_RESIZABLE, &window, &renderer)) {
@@ -41,7 +41,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
     // Setup scaling
     ImGuiStyle& style = ImGui::GetStyle();
-    //style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again) Currently crashing the program
+    style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again) Currently crashing the program
     style.FontScaleDpi = main_scale;        // Set initial font scale. (in docking branch: using io.ConfigDpiScaleFonts=true automatically overrides this for every window depending on the current monitor)
 
     // Setup Platform/Renderer backends
@@ -91,7 +91,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
     
-    int w = 0, h = 0;
+   /* int w = 0, h = 0;
     float x, y;
     const float scale = 4.0f;
 
@@ -106,7 +106,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDebugText(renderer, x, y, message.c_str());
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(renderer);*/
     
     if (SDL_GetWindowFlags(window) & SDL_WINDOW_MINIMIZED)
     {

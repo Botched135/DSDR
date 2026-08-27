@@ -62,7 +62,7 @@ namespace DSDR
             Slowed = 1 << 6,
             Taunted = 1 << 7,
             Weakened = 1 << 8,
-            Special =  = 1 << 9 // Have a list of additional special conditions, so if this flag is set, it will check the list
+            Special = 1 << 9 // Have a list of additional special conditions, so if this flag is set, it will check the list
         };
 
         enum class Movement
@@ -121,7 +121,7 @@ namespace DSDR
 
         enum class Keyword
         {
-            None = 0
+            None = 0,
             Area = 1,
             Charge = 1 << 1,
             Magic = 1 << 2,
@@ -189,7 +189,7 @@ namespace DSDR
         Psychic = 1 << 7,
         Sonic = 1 << 8,
 
-        ENUM_COUNT = 9
+        ENUM_COUNT = 9,
         All = (1 << ENUM_COUNT) - 1    
     };
 }
