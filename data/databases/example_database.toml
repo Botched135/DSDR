@@ -12,7 +12,7 @@ CreatureOrg = "Solo"
 CreatureRole = "Solo"
 CreatureGroup = "Human"
 EncounterValue = 156
-Death=-350
+Death=-350 # Defaults to 0
 Types = ["Human", "Humanoid"]
 Level = 11
 Size = "1L"
@@ -41,10 +41,80 @@ Traits = [
 
 
 [[Monsters]]
+name = "Crawling Claw"
+CreatureOrg = "Minion"
+CreatureRole = "Harrier"
+CreatureGroup = "Undead"
+EncounterValue = 3
+Types=["Soulless"]
+Size= "1T"
+Speed=6
+Stamina=4
+Stability=0
+FreeStrike=1
+Immunity=[{type="Corruption", value=1},{type="Poison", value=1}]
+Movement=["Climb"]
+CaptainBonus="+2 bonus to speed"
+Characteristics = { Might = 0, Agility = 2, Reason = -5, Intuition = -1, Presence = -1}
+Abilities=[
+ {name = "Fingernails", powerRoll="2d10+2", tags=["Melee", "Strike", "Weapon"], range={type="Melee", distance=1}, target="One creature or object per minion", actionType ="Main", isSignature=true, lowTier="1 damage", midTier="2 damage", highTier="3 damage", effect="The crawling claw shifts up to a number of squares equal to damage dealt."} ]
+Traits = [
+  { name = "Disorganized", effect="Allies can't flank with the crawling claw."}]
+
+
+
+[[Monsters]]
+name = "Ghoul"
+CreatureOrg = "Horde"
+CreatureRole = "Harrier"
+CreatureGroup = "Undead"
+EncounterValue = 3
+Types=[]
+Size= "1M"
+Speed=7
+Stamina=15
+Stability=0
+FreeStrike=1
+Immunity=[{type="Corruption", value=1},{type="Poison", value=1}]
+Movement=[]
+Characteristics = { Might = 0, Agility = 2, Reason = -2, Intuition = 0, Presence = -1}
+Abilities=[
+ {name = "Razor Claws", powerRoll="2d10+2", tags=["Charge", "Melee", "Strike", "Weapon"], range={type="Melee", distance=1}, target="One creature or object per minion", actionType ="Main", isSignature=true, lowTier="3 damage", midTier="4 damage", highTier="5 damage; M<2 bleeding (save ends)"},
+ {name = "Leap", range={type="Self"}, target="Self", actionType="Maneuver", effect="The ghoul jumps up to 3 squares. If they land on a size 1 enemy, that enemy is knocked prone and the ghoul can make a free strike against them."}]
+Traits = [
+  { name = "Arise", effect="The first time the ghoul is reduced to 0 stamina by damage that isn't fire damage or holy damage and their body isn't destroyed, they instead have 1 Stamina and fall prone."},
+  { name = "Hunger", effect="When the ghoul uses the Charge main action, they gain +2 bonus to speed until end of their turn"}]
+
+
+[[Monsters]]
+name = "Giant Zombie"
+CreatureOrg = "Elite"
+CreatureRole = "Brute"
+CreatureGroup = "Undead"
+EncounterValue = 3
+Types=["Soulless"]
+Size= "3"
+Speed=6
+Stamina=140
+Stability=2
+FreeStrike=6
+Immunity=[{type="Corruption", value=4},{type="Poison", value=4}]
+Characteristics = { Might = 3, Agility = -1, Reason = -2, Intuition = 1, Presence = 2}
+Abilities=[
+ {name = "Rotten Smash", powerRoll="2d10+3", tags=["Melee", "Strike", "Weapon"], range={type="Melee", distance=3}, target="Two creature or object", actionType ="Main", isSignature=true, lowTier="9 damage", midTier="14 damage; A<2 grabbed", highTier="17 damage; A<3 grabbed"},
+ {name = "Knocking Heads", range={type="Self"}, target="Self", actionType="Trigger", trigger="The giant zombie grabs two creatures or objects, or starts their turn with two creatures or objects grabbed", effect="The creatures or objects are smashed together using Rotten Smash, which have double edge."}]
+Traits = [
+  { name = "Endless Knight", effect="The first time the ghoul is reduced to 0 stamina by damage that isn't fire damage or holy damage and their body isn't destroyed, they instead have 50 Stamina and fall prone."},
+  { name = "Negative Nerves", effect="When the giant zombie is targeted by an ability that deals rolled damage, they halve the damage from tier 1 outcome."}]
+
 
 # Need to have monsters and group as seperate entries
 [[Group]]
 name="Undead"
 malice_actions=[
-  { name="Ravenous Horde", min_cost=2, range={type="Special", distance=0}, cooldown={global=true, count=2}, effect=""}
+  { name="Ravenous Horde", min_cost=2, range={type="Special", distance=0}, cooldown={global=true, count=2}, trigger="EndOFRound", effect="At the end of this round each hero not already adjacent to one or more undead is beset by two rotting zombies who burst up from the ground to appear in adjacent unoccupied spaces. Each zombie is winded. This feature cannot be used two rounds in a row."},
+  { name="Paranormal Fling", min_cost=3, range={type="Special", distance=0}, effect="Up to three unattended objects on the encounter map rise to float 1 square off the ground. Each object is then pulled 5 squares toward the nearest enemy within 3 squares of the object."},
+  { name="The Grasping, the Hungry", min_cost=5, range={type="Wall", distance=9}, effect="Ravenous and rotting undead arms burst forth from 9 connected squares of a vertical or horizontal surface. Any creature ends their turn adjacent to an affected square makes an Agility test."},
+  { name="Dread March", min_cost=7, max_cost=-1, range={type="Special", distance=0}, effect="Up to four undead in the encounter move up to their speed and cane make a free strike. The humber of undead affected increases by 1 for each additional Malice spent on this feature. If an undead is reduced to 0 Stamina during this dread march, they don't die until the march is resolved."},
+  { name="Blood Hunger", min_cost=5, range={type="Special", distance=0}, effect="One undead acting this turn uses a signature ability against a creature who is bleeding. As a free triggered action, each undead within 5 squares of the first undead moves up to their speed and can make a free strike against the same target."},
 ]

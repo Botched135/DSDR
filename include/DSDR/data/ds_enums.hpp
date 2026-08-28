@@ -48,7 +48,7 @@ namespace DSDR
             ENUM_COUNT
         };
 
-        enum class Condition
+        enum class ConditionFlags
         {
             None = 0,
             Bleeding = 1,
@@ -59,8 +59,9 @@ namespace DSDR
             Restrained = 1 << 5,
             Slowed = 1 << 6,
             Taunted = 1 << 7,
-            Weakened = 1 << 8,
-            Special = 1 << 9 // Have a list of additional special conditions, so if this flag is set, it will check the list
+            Uncouncious = 1 << 8,
+            Weakened = 1 << 9,
+            Special = 1 << 10 // Have a list of additional special conditions, so if this flag is set, it will check the list
         };
 
         enum class Movement
@@ -74,18 +75,9 @@ namespace DSDR
             Teleport = 1 << 5
         };
 
-        /*enum class Group  Group seems like a bad idea given that it will require code change to add your own
+        enum class KeywordFlags
         {
-            Angulotl,
-            Animal,
-            Basilisk,
-            Bugbear,
-            Demon,
-            Devil,
-
-        };*/
-        enum class Keyword
-        {
+            None = 0,
             Abyssal = 1,
             Accursed = 1 << 1,
             Animal = 1 << 2,
@@ -100,8 +92,9 @@ namespace DSDR
             Infernal = 1 << 11,
             Ooze = 1 << 12,
             Plant = 1 << 13,
-            Swarm = 1 << 14,
-            Undead = 1 << 15
+            Soulless = 1 << 14,
+            Swarm = 1 << 15,
+            Undead = 1 << 16
         };
 
         enum class Size
@@ -116,7 +109,7 @@ namespace DSDR
 
     namespace Action
     {
-        enum class Keyword
+        enum class KeywordFlags
         {
             None = 0,
             Area = 1,
@@ -160,11 +153,6 @@ namespace DSDR
         };
     }
 
-    namespace Trait
-    {
-
-    }
-
     enum class Triggers // This is for actions like some malice actions that triggers at some later point
     {
         StartOfTurn,
@@ -176,6 +164,21 @@ namespace DSDR
     };
 
     enum class DamageTypes
+    {
+        Acid,
+        Cold,
+        Corruption,
+        Fire,
+        Holy,
+        Lightning,
+        Poison,
+        Psychic,
+        Sonic,
+
+        ENUM_COUNT,  
+    };
+
+    enum class DamageTypesFlags
     {
         None = 0,
         Acid = 1,
@@ -190,5 +193,12 @@ namespace DSDR
 
         ENUM_COUNT = 9,
         All = (1 << ENUM_COUNT) - 1    
+    };
+
+    enum class EffectEnd 
+    {
+        EndOfTurn,
+        SaveEnds,
+        EndOfEncounter
     };
 }

@@ -28,7 +28,7 @@ namespace DSDR
     {
         std::string m_name;
         std::string m_power_roll;
-        u16 m_keywords = static_cast<u16>(Action::Keyword::None);
+        u16 m_keywords = static_cast<u16>(Action::KeywordFlags::None);
         Range m_range;
         std::string m_target;
         Action::Type m_type = Action::Type::Main;

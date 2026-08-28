@@ -41,6 +41,7 @@ namespace DSDR
         std::string m_id; // not sure of this yet
         Creature::Organization m_org;
         Creature::Role m_role;
+        u32 m_types = static_cast<u32>(Creature::KeywordFlags::None);
         u16 m_encounter_value = 0;
         u16 m_death = 0;
         u16 m_creature_keyword = 0;
@@ -50,8 +51,7 @@ namespace DSDR
         u16 m_stability;
         u16 m_stamina;
         u16 m_free_strike; 
-        u16 m_immunity = static_cast<u16>(DamageTypes::None);
-        u16 m_weakness = static_cast<u16>(DamageTypes::None);
+        i8 m_immunity_weakness[static_cast<u32>(DamageTypes::ENUM_COUNT)]; // negative for immunity, positive for weakness
         Characteristics m_characteristics;
         u16 m_turns_per_round = 1;
         u16 m_triggers_per_round = 1;

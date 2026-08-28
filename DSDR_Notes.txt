@@ -55,3 +55,4 @@ Abilities can set buffs on targets, which needs to be added specifically
 Notes:
 Round: full cycle
 Turn: each individual
+Malice is start of turn, villian actions in end of turn
