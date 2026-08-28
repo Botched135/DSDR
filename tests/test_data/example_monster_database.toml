@@ -8,11 +8,11 @@ base_malice_actions = [
 [[monsters]]
 name="Ajax the Invincible"
 ID="AjaxSolo"
-CreatureOrg = "Solo"
-CreatureRole = "Solo"
-CreatureGroup = "Human"
-EncounterValue = 156
-Death=-350 # Defaults to 0
+creature_org = "Solo"
+creature_role = "Solo"
+creature_group = "Human"
+encounter_value = 156
+death=-350 # Defaults to 0
 Types = ["Human", "Humanoid"]
 Level = 11
 Size = "1L"
@@ -42,10 +42,10 @@ Traits = [
 
 [[monsters]]
 name = "Crawling Claw"
-CreatureOrg = "Minion"
-CreatureRole = "Harrier"
-CreatureGroup = "Undead"
-EncounterValue = 3
+creature_org = "Minion"
+creature_role = "Harrier"
+creature_group = "Undead"
+encounter_value = 3
 Types=["Soulless"]
 Size= "1T"
 Speed=6
@@ -65,10 +65,10 @@ Traits = [
 
 [[monsters]]
 name = "Ghoul"
-CreatureOrg = "Horde"
-CreatureRole = "Harrier"
-CreatureGroup = "Undead"
-EncounterValue = 3
+creature_org = "Horde"
+creature_role = "Harrier"
+creature_group = "Undead"
+encounter_value = 3
 Types=[]
 Size= "1M"
 Speed=7
@@ -88,10 +88,10 @@ Traits = [
 
 [[monsters]]
 name = "Giant Zombie"
-CreatureOrg = "Elite"
-CreatureRole = "Brute"
-CreatureGroup = "Undead"
-EncounterValue = 3
+creature_org = "Elite"
+creature_role = "Brute"
+creature_group = "Undead"
+encounter_value = 3
 Types=["Soulless"]
 Size= "3"
 Speed=6

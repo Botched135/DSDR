@@ -1,8 +1,10 @@
 #include "DSDR/database/monster_db.hpp"
 #include "DSDR/data/monster_data.hpp"
+#include "DSDR/ds_enum_converters.hpp"
 #include <fmt/core.h>
 #include <toml++/toml.hpp>
 #include <iostream>
+#include <string_view>
 
 namespace DSDR
 {
@@ -26,12 +28,25 @@ namespace DSDR
 
         if (toml::array* monsters = mdb_table["monsters"].as_array())
         {
-            monsters->for_each([](auto&& entry)
+            try
             {
-                auto& tableEntry = *entry.as_table();
-                // each of them are tables
-                std::string name = tableEntry["name"].value_or("");
-            });
+                monsters->for_each([](auto&& entry)
+                {
+                    auto& tableEntry = *entry.as_table();
+                    // each of them are tables
+                    std::string_view name = tableEntry["name"].value<std::string_view>().value();
+                    Creature::Organization org = ConverStrToEnum<Creature::Organization>(tableEntry["creature_org"].value<std::string_view>().value());
+                    //Creature::Role role = 
+                    u16 encounter_value = tableEntry["encounter_value"].value<u16>().value(); // No defaults
+                    i16 death = tableEntry["death"].value_or(0);
+
+                });
+            }
+            catch(std::bad_optional_access& ex)
+            {
+                // clear map
+                return -1;
+            }
         }   
         
         return 1;
