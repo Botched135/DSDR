@@ -41,7 +41,6 @@ namespace DSDR
         org_map["leader"] = Creature::Organization::Leader;
         org_map["solo"] = Creature::Organization::Solo;
 
-
         // Role
         role_map["ambusher"] = Creature::Role::Ambusher;
         role_map["artillery"] = Creature::Role::Artillery;
@@ -137,7 +136,7 @@ namespace DSDR
         action_resource_map["heroic"] = Action::Resource::Heroic;
         action_resource_map["malice"] = Action::Resource::Malice;
 
-        // Triggers
+        // Action Activation
         action_activation_map["start_of_turn"]      = Action::Activation::StartOfTurn;
         action_activation_map["end_of_turn"]        = Action::Activation::EndOfTurn;
         action_activation_map["start_of_round"]     = Action::Activation::StartOfRound;
@@ -176,19 +175,19 @@ namespace DSDR
 
 
     template<typename T>
-    T ConvertStrToEnum(std::string_view in_str) = delete;
+    T ConvertStrToEnum(std::string& in_str) = delete;
 
     template<typename T>
     std::string ConvertEnumToStr(T in_enum) = delete;
 
-    template<Creature::Organization>
-    Creature::Organization ConverStrToEnum(std::string_view in_str)
+    template<>
+    Creature::Organization ConvertStrToEnum(std::string& in_str)
     {
         return org_map[in_str];
     }
 
-    template<Creature::Role>
-    Creature::Role ConverStrToEnum(std::string_view in_str)
+    template<>
+    Creature::Role ConvertStrToEnum(std::string& in_str)
     {
         return role_map[in_str];
     }

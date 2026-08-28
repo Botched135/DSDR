@@ -34,10 +34,11 @@ namespace DSDR
                 {
                     auto& tableEntry = *entry.as_table();
                     // each of them are tables
-                    std::string_view name = tableEntry["name"].value<std::string_view>().value();
-                    Creature::Organization org = ConverStrToEnum<Creature::Organization>(tableEntry["creature_org"].value<std::string_view>().value());
+                    std::string_view name = tableEntry["name"].template value<std::string_view>().value();
+                    std::string org_str = tableEntry["creature_org"].template value<std::string>().value();
+                    Creature::Organization org = ConvertStrToEnum<Creature::Organization>(org_str);
                     //Creature::Role role = 
-                    u16 encounter_value = tableEntry["encounter_value"].value<u16>().value(); // No defaults
+                    u16 encounter_value = tableEntry["encounter_value"].template value<u16>().value(); // No defaults
                     i16 death = tableEntry["death"].value_or(0);
 
                 });

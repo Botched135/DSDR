@@ -51,7 +51,7 @@ namespace DSDR
         u16 m_stability;
         u16 m_stamina;
         u16 m_free_strike; 
-        i8 m_immunity_weakness[static_cast<u32>(DamageTypes::ENUM_COUNT)]; // negative for immunity, positive for weakness
+        i8 m_immunity_weakness[static_cast<u32>(DamageType::ENUM_COUNT)]; // negative for immunity, positive for weakness
         Characteristics m_characteristics;
         u16 m_turns_per_round = 1;
         u16 m_triggers_per_round = 1;
