@@ -1,6 +1,7 @@
 #include "DSDR/database/monster_db.hpp"
 #include "DSDR/data/monster_data.hpp"
 #include "DSDR/ds_enum_converters.hpp"
+#include "DSDR/toml_helpers.hpp"
 #include <fmt/core.h>
 #include <toml++/toml.hpp>
 #include <iostream>
@@ -34,12 +35,12 @@ namespace DSDR
                 {
                     auto& tableEntry = *entry.as_table();
                     // each of them are tables
-                    std::string_view name = tableEntry["name"].template value<std::string_view>().value();
-                    std::string org_str = tableEntry["creature_org"].template value<std::string>().value();
-                    Creature::Organization org = ConvertStrToEnum<Creature::Organization>(org_str);
-                    //Creature::Role role = 
-                    u16 encounter_value = tableEntry["encounter_value"].template value<u16>().value(); // No defaults
+                    std::string_view name = extract_val<std::string_view>(tableEntry["name"]);
+                    Creature::Organization org = ConvertStrToEnum<Creature::Organization>(extract_val<std::string_view>(tableEntry["creature_org"]));
+                    Creature::Role role = ConvertStrToEnum<Creature::Role>(extract_val<std::string_view>(tableEntry["creature_role"]));
+                    u16 encounter_value = extract_val<u16>(tableEntry["encounter_value"]); // No defaults
                     i16 death = tableEntry["death"].value_or(0);
+                    // u32 types = tableEntry["types"]
 
                 });
             }

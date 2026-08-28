@@ -8,16 +8,27 @@ ${DOCTEST_INCLUDE_DIR}
 ${CMAKE_CURRENT_SOURCE_DIR}/unit_tests
 )
 
-message("Copying test data to binary folder")
-add_custom_command(TARGET dr_tests POST_BUILD
+
+add_custom_command(
+    OUTPUT "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_data/databases/example_monster_database.toml"
     COMMAND ${CMAKE_COMMAND} -E copy
     "${CMAKE_CURRENT_SOURCE_DIR}/test_data/example_monster_database.toml"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_data/databases/example_monster_database.toml"
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/test_data/example_monster_database.toml"
+    
 )
 
-add_custom_command(TARGET dr_tests POST_BUILD
+add_custom_command(
+    OUTPUT "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_data/databases/example_monster_database.json"
     COMMAND ${CMAKE_COMMAND} -E copy
     "${CMAKE_CURRENT_SOURCE_DIR}/test_data/example_monster_database.json"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_data/databases/example_monster_database.json"
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/test_data/example_monster_database.json"
+    
 )
+
+
+# Custom target for activate the custom command above
+add_custom_target(copy_config DEPENDS "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_data/databases/example_monster_database.toml" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_data/databases/example_monster_database.json")
+add_dependencies(dr_tests copy_config)
 

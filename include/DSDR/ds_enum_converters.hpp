@@ -6,7 +6,7 @@
 
 namespace DSDR
 {
-    template<typename T> using enum_map = ankerl::unordered_dense::map<std::string, T>;
+    template<typename T> using enum_map = ankerl::unordered_dense::map<std::string_view, T>;
 
 
     namespace
@@ -175,19 +175,19 @@ namespace DSDR
 
 
     template<typename T>
-    T ConvertStrToEnum(std::string& in_str) = delete;
+    T ConvertStrToEnum(std::string_view in_str) = delete;
 
     template<typename T>
     std::string ConvertEnumToStr(T in_enum) = delete;
 
     template<>
-    Creature::Organization ConvertStrToEnum(std::string& in_str)
+    Creature::Organization ConvertStrToEnum(std::string_view in_str)
     {
         return org_map[in_str];
     }
 
     template<>
-    Creature::Role ConvertStrToEnum(std::string& in_str)
+    Creature::Role ConvertStrToEnum(std::string_view in_str)
     {
         return role_map[in_str];
     }

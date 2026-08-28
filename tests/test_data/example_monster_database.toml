@@ -13,31 +13,31 @@ creature_role = "Solo"
 creature_group = "Human"
 encounter_value = 156
 death=-350 # Defaults to 0
-Types = ["Human", "Humanoid"]
-Level = 11
-Size = "1L"
-Speed = 7
-Stamina = 700
-Stability = 2
-FreeStrike = 11
-Immunity = [] # Most of these should be able to be defaulted
-Weakness = []
-Movement = ["Flying", "Hover"]
-Characteristics = { Might = 5, Agility = 4, Reason = 5, Intuition = 5, Presence = 4}
-TurnsPerRound = 3
-TriggersPerRound = 3
-EndEffect = { damage = 20, count = 2} 
-Abilities=[
-{ name = "Blade of the Gol King", powerRoll="2d10+5", tags = ["Charge", "Magic", "Melee", "Strike"], range={type = "Melee", distance=1}, target="Two creatures or objects", actionType="Main", isSignature=true, lowTier="16 damage; M<4 target loses 1d3 Recoveries", midTier="22 damage; M<5 target loses 1d3 Recoveries", highTier="26 damage; M<6 prone and target loses 1d3 Recoveries", effect="Ajax shifts up to 2 squares between striking each target", extra_cost={type="Malice", min_cost=1, max_cost=-1, effect="Ajax can strike one additional target for each Malice spent"}}, 
-{ name = "Who's Hesitating?", trigger = "A creature uses the Hesitation is Weakness ability", range={ type="Self"}, target="Self", effect="Ajax shifts up to his speed and can make a free strike. If the target has R<4, this free strike also makes them wekened until the end of their next turn."}]
-VillianActions = [ 
-{ name = "Phoenix Wing King", powerRoll = "2d10+5", tags = ["Area", "Magic", "Weapon"], range={type="Burst", distance=5}, target="Each enemy in the area", lowTier="11 fire damage; A<4 weakened (save ends)", midTier="17 fire damage; A<5 weakened (save ends)", highTier="21 fire damage; A<6 weakened (save ends)", effect="Ajax flies at high speed to cut through each target, then appears in an unoccupied space within distance"},
+types = ["Human", "Humanoid"]
+level = 11
+size = "1L"
+speed = 7
+stamina = 700
+stability = 2
+free_strike = 11
+immunity = [] # Most of these should be able to be defaulted
+weakness = []
+movement = ["Flying", "Hover"]
+characteristics = { might = 5, agility = 4, reason = 5, intuition = 5, presence = 4}
+turns_per_round = 3
+triggers_per_round = 3
+end_effect = { damage = 20, count = 2} 
+abilities=[
+{ name = "Blade of the Gol King", roll={type="power", bonus=5}, tags = ["Charge", "Magic", "Melee", "Strike"], range={type = "Melee", distance=1}, target={ type=["creature", "object"], count=2}, actionType="Main", isSignature=true, lowTier={damage=16, type="none", potency={characteristic="might", resist=4, effect="target loses 1d3 Recoveries"}}, midTier={damage=22, type="none", potency={characteristic="might", resist=5, effect="target loses 1d3 Recoveries"}}, highTier={damage=16, type="none", potency={characteristic="might", resist=6, effect="target knocked prone and loses 1d3 Recoveries"}}, effect="Ajax shifts up to 2 squares between striking each target", extra_cost={type="Malice", min_cost=1, max_cost=-1, effect="Ajax can strike one additional target for each Malice spent"}}, 
+{ name = "Who's Hesitating?", trigger = "A creature uses the Hesitation is Weakness ability", range={ type="Self"}, target={type=["self"]}, effect="Ajax shifts up to his speed and can make a free strike. If the target has R<4, this free strike also makes them wekened until the end of their next turn."}]
+villian_actions = [ 
+{ name = "Phoenix Wing King", roll={type="power", bonus=5}, tags = ["Area", "Magic", "Weapon"], range={type="Burst", distance=5}, target={type=["enemy"], count = -1}, lowTier={damage=11, type="fire", potentcy={characteristic="agility", resist=4, effect="target weakened (save ends)"}}, midTier={damage=16, type="fire", potentcy={characteristic="agility", resist=5, effect="target weakened (save ends)"}}, highTier={damage=21, type="fire", potentcy={characteristic="agility", resist=6, effect="target weakened (save ends)"}}, effect="Ajax flies at high speed to cut through each target, then appears in an unoccupied space within distance"},
 { name = "I've Learned Their Tricks", range = {type="Burst", distance = 3}, target = "Each enemy in the area", effect= "Ajax uses the shadow elf eclipse's technique to reduce each target's surges to 0. Additionally, until end of the round, Ajax ignores edges and double edges on any target's abilities, and ignores any nondamaging effects of any target's damage-dealing abilities.", special="This villian action can be replaced with a villian action from a creature any target has previously encountered"},
-{ name = "Awe of the Iron Crown", tags = ["Area", "Magic"], range={type="Burst", distance=7}, target="Each enemy in the area", effect= "Each target who has I<5 is knocked prone and can't stand until Ajax deals damage to them. For each target not knocked prone, Ajax can move up to his speed toward that target and use Blade of the Gol King against them"}]
-MaliceActions = [] # Solo monsters does not get Malice actions from their group
-Traits = [
+{ name = "Awe of the Iron Crown", tags = ["Area", "Magic"], range={type="Burst", distance=7}, target={type=["enemy"], count=-1}, effect= "Each target who has I<5 is knocked prone and can't stand until Ajax deals damage to them. For each target not knocked prone, Ajax can move up to his speed toward that target and use Blade of the Gol King against them"}]
+malice_actions = [] # Solo monsters does not get Malice actions from their group
+traits = [
 	{ name = "Tactical Stance", condition="StartOfRound", effect="Switch stances between"},
-	{ name = "I'm Not Done Yet", condition="Stamina<0", effect="Ajax is bleeding, he can choose any two options from his tactical Stance trait each round, and the Director agains 2 additional Malice per round"}] 
+	{ name = "I'm Not Done Yet", condition="stamina<0", effect="Ajax is bleeding, he can choose any two options from his tactical Stance trait each round, and the Director agains 2 additional Malice per round"}] 
 
 
 [[monsters]]
@@ -46,18 +46,18 @@ creature_org = "Minion"
 creature_role = "Harrier"
 creature_group = "Undead"
 encounter_value = 3
-Types=["Soulless"]
-Size= "1T"
-Speed=6
-Stamina=4
-Stability=0
-FreeStrike=1
-Immunity=[{type="Corruption", value=1},{type="Poison", value=1}]
-Movement=["Climb"]
-CaptainBonus="+2 bonus to speed"
-Characteristics = { Might = 0, Agility = 2, Reason = -5, Intuition = -1, Presence = -1}
-Abilities=[
- {name = "Fingernails", powerRoll="2d10+2", tags=["Melee", "Strike", "Weapon"], range={type="Melee", distance=1}, target="One creature or object per minion", actionType ="Main", isSignature=true, lowTier="1 damage", midTier="2 damage", highTier="3 damage", effect="The crawling claw shifts up to a number of squares equal to damage dealt."} ]
+types=["Soulless"]
+size= "1T"
+speed=6
+stamina=4
+stability=0
+free_strike=1
+immunity=[{type="Corruption", value=1},{type="Poison", value=1}]
+movement=["Climb"]
+captain_bonus="+2 bonus to speed"
+characteristics = { might = 0, agility = 2, reason = -5, intuition = -1, presence = -1}
+abilities=[
+ {name = "Fingernails", roll={type="power", bonus=2}, tags=["Melee", "Strike", "Weapon"], range={type="Melee", distance=1}, target={type=["creature", "object"], count=1}, actionType ="Main", isSignature=true, lowTier={damage=1}, midTier={damage=2}, highTier={damage=3}, effect="The crawling claw shifts up to a number of squares equal to damage dealt."} ]
 Traits = [
   { name = "Disorganized", effect="Allies can't flank with the crawling claw."}]
 
@@ -69,20 +69,20 @@ creature_org = "Horde"
 creature_role = "Harrier"
 creature_group = "Undead"
 encounter_value = 3
-Types=[]
-Size= "1M"
-Speed=7
-Stamina=15
-Stability=0
-FreeStrike=1
-Immunity=[{type="Corruption", value=1},{type="Poison", value=1}]
-Movement=[]
-Characteristics = { Might = 0, Agility = 2, Reason = -2, Intuition = 0, Presence = -1}
-Abilities=[
- {name = "Razor Claws", powerRoll="2d10+2", tags=["Charge", "Melee", "Strike", "Weapon"], range={type="Melee", distance=1}, target="One creature or object per minion", actionType ="Main", isSignature=true, lowTier="3 damage", midTier="4 damage", highTier="5 damage; M<2 bleeding (save ends)"},
- {name = "Leap", range={type="Self"}, target="Self", actionType="Maneuver", effect="The ghoul jumps up to 3 squares. If they land on a size 1 enemy, that enemy is knocked prone and the ghoul can make a free strike against them."}]
+types=[]
+size= "1M"
+speed=7
+stamina=15
+stability=0
+free_strike=1
+immunity=[{type="Corruption", value=1},{type="Poison", value=1}]
+movement=[]
+characteristics = { might = 0, agility = 2, reason = -2, intuition = 0, presence = -1}
+abilities=[
+ {name = "Razor Claws", roll={type="power", bonus=2}, tags=["Charge", "Melee", "Strike", "Weapon"], range={type="Melee", distance=1}, target={type = ["creature", "object"], count=1}, actionType ="Main", isSignature=true, lowTier={damage = 3}, midTier={damage=4}, highTier={damage=5, potency={characteristic="might", resist=2, effect="bleeding (save ends)"}}},
+ {name = "Leap", range={type="Self"}, target={type=["self"]}, actionType="Maneuver", effect="The ghoul jumps up to 3 squares. If they land on a size 1 enemy, that enemy is knocked prone and the ghoul can make a free strike against them."}]
 Traits = [
-  { name = "Arise", effect="The first time the ghoul is reduced to 0 stamina by damage that isn't fire damage or holy damage and their body isn't destroyed, they instead have 1 Stamina and fall prone."},
+  { name = "Arise", effect="The first time the ghoul is reduced to 0 stamina by damage that isn't fire damage or holy damage and their body isn't destroyed, they instead have 1 stamina and fall prone."},
   { name = "Hunger", effect="When the ghoul uses the Charge main action, they gain +2 bonus to speed until end of their turn"}]
 
 
@@ -92,19 +92,19 @@ creature_org = "Elite"
 creature_role = "Brute"
 creature_group = "Undead"
 encounter_value = 3
-Types=["Soulless"]
-Size= "3"
-Speed=6
-Stamina=140
-Stability=2
-FreeStrike=6
-Immunity=[{type="Corruption", value=4},{type="Poison", value=4}]
-Characteristics = { Might = 3, Agility = -1, Reason = -2, Intuition = 1, Presence = 2}
-Abilities=[
- {name = "Rotten Smash", powerRoll="2d10+3", tags=["Melee", "Strike", "Weapon"], range={type="Melee", distance=3}, target="Two creature or object", actionType ="Main", isSignature=true, lowTier="9 damage", midTier="14 damage; A<2 grabbed", highTier="17 damage; A<3 grabbed"},
+types=["Soulless"]
+size= "3"
+speed=6
+stamina=140
+stability=2
+free_strike=6
+immunity=[{type="Corruption", value=4},{type="Poison", value=4}]
+characteristics = { might = 3, agility = -1, reason = -2, intuition = 1, presence = 2}
+abilities=[
+ {name = "Rotten Smash", roll={type="power", bonus=3}, tags=["Melee", "Strike", "Weapon"], range={type="Melee", distance=3}, target={type=["creature", "object"], count = 2}, actionType ="Main", isSignature=true, lowTier={damage=9}, midTier={damage=14, potency={characteristic="agility", resist=2, effect="grabbed"}}, highTier={damage=17, potency={characteristic="agility", resist=3, effect="grabbed"}}},
  {name = "Knocking Heads", range={type="Self"}, target="Self", actionType="Trigger", trigger="The giant zombie grabs two creatures or objects, or starts their turn with two creatures or objects grabbed", effect="The creatures or objects are smashed together using Rotten Smash, which have double edge."}]
 Traits = [
-  { name = "Endless Knight", effect="The first time the ghoul is reduced to 0 stamina by damage that isn't fire damage or holy damage and their body isn't destroyed, they instead have 50 Stamina and fall prone."},
+  { name = "Endless Knight", effect="The first time the ghoul is reduced to 0 stamina by damage that isn't fire damage or holy damage and their body isn't destroyed, they instead have 50 stamina and fall prone."},
   { name = "Negative Nerves", effect="When the giant zombie is targeted by an ability that deals rolled damage, they halve the damage from tier 1 outcome."}]
 
 
@@ -114,7 +114,7 @@ name="Undead"
 malice_actions=[
   { name="Ravenous Horde", min_cost=2, range={type="Special", distance=0}, cooldown={global=true, count=2}, trigger="EndOFRound", effect="At the end of this round each hero not already adjacent to one or more undead is beset by two rotting zombies who burst up from the ground to appear in adjacent unoccupied spaces. Each zombie is winded. This feature cannot be used two rounds in a row."},
   { name="Paranormal Fling", min_cost=3, range={type="Special", distance=0}, effect="Up to three unattended objects on the encounter map rise to float 1 square off the ground. Each object is then pulled 5 squares toward the nearest enemy within 3 squares of the object."},
-  { name="The Grasping, the Hungry", min_cost=5, range={type="Wall", distance=9}, effect="Ravenous and rotting undead arms burst forth from 9 connected squares of a vertical or horizontal surface. Any creature ends their turn adjacent to an affected square makes an Agility test."},
-  { name="Dread March", min_cost=7, max_cost=-1, range={type="Special", distance=0}, effect="Up to four undead in the encounter move up to their speed and cane make a free strike. The humber of undead affected increases by 1 for each additional Malice spent on this feature. If an undead is reduced to 0 Stamina during this dread march, they don't die until the march is resolved."},
+  { name="The Grasping, the Hungry", min_cost=5, range={type="Wall", distance=9}, effect="Ravenous and rotting undead arms burst forth from 9 connected squares of a vertical or horizontal surface. Any creature ends their turn adjacent to an affected square makes an agility test."},
+  { name="Dread March", min_cost=7, max_cost=-1, range={type="Special", distance=0}, effect="Up to four undead in the encounter move up to their speed and cane make a free strike. The humber of undead affected increases by 1 for each additional Malice spent on this feature. If an undead is reduced to 0 stamina during this dread march, they don't die until the march is resolved."},
   { name="Blood Hunger", min_cost=5, range={type="Special", distance=0}, effect="One undead acting this turn uses a signature ability against a creature who is bleeding. As a free triggered action, each undead within 5 squares of the first undead moves up to their speed and can make a free strike against the same target."},
 ]

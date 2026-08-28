@@ -119,6 +119,14 @@ namespace DSDR
             Weapon = 1 << 7
         };
 
+        // Good idea to make this a variant with visitor
+        enum class Roll
+        {
+            None,
+            Power,
+            Test,
+        };
+
         enum class Type
         {
             Main, 
@@ -160,10 +168,18 @@ namespace DSDR
         };
     }
 
- 
-
+    // If the target count is 0 it is considered each target, so default to 0
+    enum class TargetFlags
+    {
+        Creature = 1,
+        Object = 1 << 1,
+        Enemy = 1 << 2,
+        Ally = 1 << 3,
+        Self = 1 << 4
+    };
     enum class DamageType
     {
+        None, // SHOULD BE DEFAULT
         Acid,
         Cold,
         Corruption,
