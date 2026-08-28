@@ -26,7 +26,7 @@ Movement = ["Flying", "Hover"]
 Characteristics = { Might = 5, Agility = 4, Reason = 5, Intuition = 5, Presence = 4}
 TurnsPerRound = 3
 TriggersPerRound = 3
-EndEffect = { damage = 20, count = 2} 
+EndEffect = { damage = 20, count = 2 } 
 Abilities=[
 { name = "Blade of the Gol King", powerRoll="2d10+5", tags = ["Charge", "Magic", "Melee", "Strike"], range={type = "Melee", distance=1}, target="Two creatures or objects", actionType="Main", isSignature=true, lowTier="16 damage; M<4 target loses 1d3 Recoveries", midTier="22 damage; M<5 target loses 1d3 Recoveries", highTier="26 damage; M<6 prone and target loses 1d3 Recoveries", effect="Ajax shifts up to 2 squares between striking each target", extra_cost={type="Malice", min_cost=1, max_cost=-1, effect="Ajax can strike one additional target for each Malice spent"}}, 
 { name = "Who's Hesitating?", trigger = "A creature uses the Hesitation is Weakness ability", range={ type="Self"}, target="Self", effect="Ajax shifts up to his speed and can make a free strike. If the target has R<4, this free strike also makes them wekened until the end of their next turn."}]
