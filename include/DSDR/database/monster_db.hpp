@@ -1,3 +1,5 @@
+#pragma once
+
 #include <filesystem>
 #include "DSDR/utility/type_defs.hpp"
 

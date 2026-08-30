@@ -26,6 +26,7 @@ target_include_directories(DSDR PUBLIC
 )
 
 target_sources(DSDR PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ds_enum_converters.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/database/monster_db.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/management/encounter_management.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/management/malice_management.cpp

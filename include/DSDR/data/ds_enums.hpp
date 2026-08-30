@@ -61,7 +61,7 @@ namespace DSDR
             Special = 1 << 10 // Have a list of additional special conditions, so if this flag is set, it will check the list
         };
 
-        enum class Movement
+        enum class MovementFlags
         {
             None = 0,
             Burrow = 1,

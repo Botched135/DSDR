@@ -1,4 +1,4 @@
-
+#pragma once
 namespace DSDR
 {
 using u8 = unsigned char;
