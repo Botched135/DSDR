@@ -3,9 +3,11 @@
 #include "DSDR/data/action_data.hpp"
 #include <string>
 #include <vector>
+#include <array>
 
 namespace DSDR
 {
+    using resilience_array = std::array<u16, static_cast<u32>(Creature::DamageTypeResilience::ENUM_COUNT)>; // The eight lower bits are weakness, the upper are weakness 
     struct Size
     {
         u8 m_space = 1;
@@ -23,8 +25,8 @@ namespace DSDR
 
     struct EndEffect 
     {
-        u16 m_damage_taken = 0;
-        u16 m_effects_ended = 0;
+        u8 m_damage_taken = 0;
+        u8 m_effects_ended = 0;
     };
 
     struct Trait
@@ -50,8 +52,8 @@ namespace DSDR
         u16 m_speed;
         u16 m_stability;
         u16 m_stamina;
-        u16 m_free_strike; 
-        i8 m_immunity_weakness[static_cast<u32>(DamageType::ENUM_COUNT)]; // negative for immunity, positive for weakness
+        u16 m_free_strike;
+        i8 m_resilience[static_cast<u32>(Creature::DamageTypeResilience::ENUM_COUNT)]; // positive for immunity, negative for weakness
         Characteristics m_characteristics;
         u16 m_turns_per_round = 1;
         u16 m_triggers_per_round = 1;

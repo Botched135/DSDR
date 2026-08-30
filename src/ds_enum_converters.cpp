@@ -69,6 +69,18 @@ namespace DSDR
         creature_keyword_map["swarm"]     = Creature::KeywordFlags::Swarm;
         creature_keyword_map["undead"]    = Creature::KeywordFlags::Undead;
 
+        // Damage Types Resilience
+        damage_type_resilience_map["acid"]       = Creature::DamageTypeResilience::Acid;
+        damage_type_resilience_map["cold"]       = Creature::DamageTypeResilience::Cold;
+        damage_type_resilience_map["corruption"] = Creature::DamageTypeResilience::Corruption;
+        damage_type_resilience_map["fire"]       = Creature::DamageTypeResilience::Fire;
+        damage_type_resilience_map["holy"]       = Creature::DamageTypeResilience::Holy;
+        damage_type_resilience_map["lightning"]  = Creature::DamageTypeResilience::Lightning;
+        damage_type_resilience_map["poison"]     = Creature::DamageTypeResilience::Poison;
+        damage_type_resilience_map["psychic"]    = Creature::DamageTypeResilience::Psychic;
+        damage_type_resilience_map["sonic"]      = Creature::DamageTypeResilience::Sonic;
+        damage_type_resilience_map["all"]        = Creature::DamageTypeResilience::All;
+
         // Size
         size_map['t'] = Creature::Size::Tiny;
         size_map['s'] = Creature::Size::Small;
@@ -128,18 +140,6 @@ namespace DSDR
         damage_type_map["psychic"]    = DamageType::Psychic;
         damage_type_map["sonic"]      = DamageType::Sonic;
 
-        // Damage Types Flags
-        damage_type_flag_map["acid"]       = DamageTypeFlag::Acid;
-        damage_type_flag_map["cold"]       = DamageTypeFlag::Cold;
-        damage_type_flag_map["corruption"] = DamageTypeFlag::Corruption;
-        damage_type_flag_map["fire"]       = DamageTypeFlag::Fire;
-        damage_type_flag_map["holy"]       = DamageTypeFlag::Holy;
-        damage_type_flag_map["lightning"]  = DamageTypeFlag::Lightning;
-        damage_type_flag_map["poison"]     = DamageTypeFlag::Poison;
-        damage_type_flag_map["psychic"]    = DamageTypeFlag::Psychic;
-        damage_type_flag_map["sonic"]      = DamageTypeFlag::Sonic;
-        damage_type_flag_map["all"]        = DamageTypeFlag::All;
-
         // Effect End
         effect_end_map["end_of_turn"]      = EffectEnd::EndOfTurn;
         effect_end_map["save_ends"]        = EffectEnd::SaveEnds;
@@ -168,6 +168,12 @@ namespace DSDR
     Creature::MovementFlags convert_str_to_enum(std::string_view in_str)
     {
         return movement_map[in_str];
+    }
+
+    template<>
+    Creature::DamageTypeResilience convert_str_to_enum(std::string_view in_str)
+    {
+        return damage_type_resilience_map[in_str];
     }
 
     Creature::Size convert_char_to_enum(const char in_char)

@@ -102,6 +102,23 @@ namespace DSDR
             Large
         };
 
+        enum class DamageTypeResilience
+        {
+            Acid,
+            Cold,
+            Corruption,
+            Fire,
+            Holy,
+            Lightning,
+            Poison,
+            Psychic,
+            Sonic,
+            All,
+
+            ENUM_COUNT
+        };
+
+
     }
 
     namespace Action
@@ -177,6 +194,7 @@ namespace DSDR
         Ally = 1 << 3,
         Self = 1 << 4
     };
+
     enum class DamageType
     {
         None, // SHOULD BE DEFAULT
@@ -191,23 +209,6 @@ namespace DSDR
         Sonic,
 
         ENUM_COUNT,  
-    };
-
-    enum class DamageTypeFlag
-    {
-        None = 0,
-        Acid = 1,
-        Cold = 1 << 1,
-        Corruption = 1 << 2,
-        Fire = 1 << 3,
-        Holy = 1 << 4,
-        Lightning = 1 << 5,
-        Poison = 1 << 6,
-        Psychic = 1 << 7,
-        Sonic = 1 << 8,
-
-        ENUM_COUNT = 9,
-        All = (1 << ENUM_COUNT) - 1    
     };
 
     enum class EffectEnd 

@@ -4,6 +4,20 @@
 
 namespace DSDR
 {
+    struct PowerRoll
+    {
+        Action::Roll m_roll = Action::Roll::Power;
+        u8 m_damage;
+    };
+
+    struct Potency
+    {
+        Creature::Characteristic m_test_characteristic;
+        u8 m_resist_threshold;
+        std::string m_effect;
+
+    };
+
     struct Range
     {
         Action::Distance m_type;

@@ -21,6 +21,44 @@ namespace DSDR
 
             return {static_cast<u8>(space), pos < size_str.size() ? convert_char_to_enum(size_str[pos]) : Creature::Size::Medium};
         }
+
+        Characteristics handle_characteristics(const node_view& in_node_view)
+        {
+            return {extract_val<i8>(in_node_view["might"]), extract_val<i8>(in_node_view["agility"]), extract_val<i8>(in_node_view["reason"]),
+            extract_val<i8>(in_node_view["intuition"]), extract_val<i8>(in_node_view["presence"]), };
+        }
+
+        EndEffect handle_end_effect(const node_view& in_node_view)
+        {
+            return {extract_val_or<u8>(in_node_view["damage"], 0), extract_val_or<u8>(in_node_view["count"], 0)};
+        }
+
+        resilience_array handle_damage_type_resilience(const node_view& in_immunities, const node_view& in_weaknesses)
+        {
+            resilience_array result;
+
+            if(toml::array* immunities = in_immunities.as_array())
+            {
+                for(auto&& entry : *immunities)
+                {
+                    auto& immunity = *entry.as_table();
+                    const u32 index = static_cast<u32>(convert_str_to_enum<Creature::DamageTypeResilience>(extract_str(immunity["type"])));
+                    result[index] |= extract_val<u8>(immunity["value"]) << 8;
+                }
+            }
+
+            if(toml::array* weaknesses = in_weaknesses.as_array())
+            {
+                for(auto&& entry : *weaknesses)
+                {   
+                    auto& weakness = *entry.as_table();
+                    const u32 index = static_cast<u32>(convert_str_to_enum<Creature::DamageTypeResilience>(extract_str(weakness["type"])));
+                    result[index] |= extract_val<u8>(weakness["value"]);
+                }
+            }
+
+            return result;
+        }
     }
 
     i32 load_monster_from_file(const std::filesystem::path& in_file_path)
@@ -62,17 +100,16 @@ namespace DSDR
                     u16 stamina = extract_val<u16>(table_entry["stamina"]);
                     u16 stability = extract_val<u16>(table_entry["stability"]);
                     u16 free_strike = extract_val<u16>(table_entry["free_strike"]);
-
-                    // immunity
-                    // weakness
+                    
+                    resilience_array resilience = handle_damage_type_resilience(table_entry["immunity"], table_entry["weakness"]);
                     
                     u16 movement = extract_flags<Creature::MovementFlags>(table_entry["movement"]);
                     
-                    Characteristics characteristics = {};
+                    Characteristics characteristics = handle_characteristics(table_entry["characteristics"]);
 
                     u16 turns_per_round = table_entry["turns_per_round"].value_or(1);
                     u16 triggers_per_round = table_entry["triggers_per_round"].value_or(1);
-                    EndEffect end_effect = {};
+                    EndEffect end_effect = handle_end_effect(table_entry["end_effect"]);
 
                     // Abilities
                     // Villian_actions

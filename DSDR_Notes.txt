@@ -62,4 +62,4 @@ What does monsters not have in common:
 Minions: CaptainBonus
 Leaders & Solo: Villian actions
 As soon as there are minions in a group "Battlefield promotions" will trigger at top of round
-
+Calculate weakness first, then immunity
