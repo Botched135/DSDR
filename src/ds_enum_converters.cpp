@@ -70,10 +70,10 @@ namespace DSDR
         creature_keyword_map["undead"]    = Creature::KeywordFlags::Undead;
 
         // Size
-        size_map["T"] = Creature::Size::Tiny;
-        size_map["S"] = Creature::Size::Small;
-        size_map["M"] = Creature::Size::Medium;
-        size_map["L"] = Creature::Size::Large;
+        size_map['t'] = Creature::Size::Tiny;
+        size_map['s'] = Creature::Size::Small;
+        size_map['m'] = Creature::Size::Medium;
+        size_map['l'] = Creature::Size::Large;
 
         // Action Keywords
         action_keyword_map["area"]    = Action::KeywordFlags::Area;
@@ -168,6 +168,11 @@ namespace DSDR
     Creature::MovementFlags convert_str_to_enum(std::string_view in_str)
     {
         return movement_map[in_str];
+    }
+
+    Creature::Size convert_char_to_enum(const char in_char)
+    {
+        return size_map[in_char];
     }
 
 }

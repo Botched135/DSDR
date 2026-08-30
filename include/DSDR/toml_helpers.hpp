@@ -1,5 +1,6 @@
 #pragma once 
 #include <toml++/toml.hpp>
+#include "DSDR/data/monster_data.hpp"
 #include "DSDR/ds_enum_converters.hpp"
 #include "DSDR/utility/concepts.hpp"
 #include "DSDR/utility/algorithms.hpp"
@@ -40,7 +41,7 @@ namespace DSDR
 
 
     template<typename T, unsigned_int U = u32>
-    U extract_flags(const node_view in_node_view)
+    U extract_flags(const node_view& in_node_view)
     {
         U result = 0;
         if(toml::array* flag_array = in_node_view.as_array())
@@ -53,4 +54,5 @@ namespace DSDR
 
         return result;
     }
+
 }

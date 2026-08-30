@@ -11,6 +11,18 @@ namespace DSDR
 {
     constexpr const char* s_toml_ext =".toml";
 
+    namespace // Helper functions
+    {
+        Size handle_size(const node_view& in_node_view)
+        {
+            std::string size_str = extract_str(in_node_view);
+            std::size_t pos = 0;
+            i32 space = std::stoi(size_str, &pos);
+
+            return {static_cast<u8>(space), pos < size_str.size() ? convert_char_to_enum(size_str[pos]) : Creature::Size::Medium};
+        }
+    }
+
     i32 load_monster_from_file(const std::filesystem::path& in_file_path)
     {
         if(in_file_path.extension() != s_toml_ext) return 0;
@@ -36,30 +48,30 @@ namespace DSDR
                 monsters->for_each([](auto&& entry)
                 {
                     // TODO: the exception that is thrown needs to be useful
-                    auto& tableEntry = *entry.as_table();
+                    auto& table_entry = *entry.as_table();
                     // each of them are tables
-                    std::string_view name = extract_val<std::string_view>(tableEntry["name"]);
-                    Creature::Organization org = convert_str_to_enum<Creature::Organization>(extract_str(tableEntry["creature_org"]));
-                    Creature::Role role = convert_str_to_enum<Creature::Role>(extract_str(tableEntry["creature_role"]));
-                    u16 encounter_value = extract_val<u16>(tableEntry["encounter_value"]); // No defaults
-                    i16 death = tableEntry["death"].value_or(0);
-                    u32 types = extract_flags<Creature::KeywordFlags>(tableEntry["types"]);
-                    u16 level = extract_val<u16>(tableEntry["level"]);
-                    Size size = {};
-                    u16 speed = extract_val<u16>(tableEntry["speed"]);
-                    u16 stamina = extract_val<u16>(tableEntry["stamina"]);
-                    u16 stability = extract_val<u16>(tableEntry["stability"]);
-                    u16 free_strike = extract_val<u16>(tableEntry["free_strike"]);
+                    std::string_view name = extract_val<std::string_view>(table_entry["name"]);
+                    Creature::Organization org = convert_str_to_enum<Creature::Organization>(extract_str(table_entry["creature_org"]));
+                    Creature::Role role = convert_str_to_enum<Creature::Role>(extract_str(table_entry["creature_role"]));
+                    u16 encounter_value = extract_val<u16>(table_entry["encounter_value"]); // No defaults
+                    i16 death = table_entry["death"].value_or(0);
+                    u32 types = extract_flags<Creature::KeywordFlags>(table_entry["types"]);
+                    u16 level = extract_val<u16>(table_entry["level"]);
+                    Size size = handle_size(table_entry["size"]);
+                    u16 speed = extract_val<u16>(table_entry["speed"]);
+                    u16 stamina = extract_val<u16>(table_entry["stamina"]);
+                    u16 stability = extract_val<u16>(table_entry["stability"]);
+                    u16 free_strike = extract_val<u16>(table_entry["free_strike"]);
 
-                    // imunity
+                    // immunity
                     // weakness
                     
-                    u16 movement = extract_flags<Creature::MovementFlags>(tableEntry["movement"]);
+                    u16 movement = extract_flags<Creature::MovementFlags>(table_entry["movement"]);
                     
                     Characteristics characteristics = {};
 
-                    u16 turns_per_round = tableEntry["turns_per_round"].value_or(1);
-                    u16 triggers_per_round = tableEntry["triggers_per_round"].value_or(1);
+                    u16 turns_per_round = table_entry["turns_per_round"].value_or(1);
+                    u16 triggers_per_round = table_entry["triggers_per_round"].value_or(1);
                     EndEffect end_effect = {};
 
                     // Abilities
