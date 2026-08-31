@@ -63,3 +63,6 @@ Minions: CaptainBonus
 Leaders & Solo: Villian actions
 As soon as there are minions in a group "Battlefield promotions" will trigger at top of round
 Calculate weakness first, then immunity
+
+
+Actions: what differ? Basically only placement. For villian actions, they have an order, but that is all placement 

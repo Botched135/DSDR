@@ -15,6 +15,7 @@ namespace DSDR
         static enum_map<Creature::Organization> org_map;
         static enum_map<Creature::Role> role_map;
         static enum_map<Creature::ConditionFlags> condition_map;
+        static enum_map<Creature::Characteristic> characteristics_map;
         static enum_map<Creature::MovementFlags> movement_map;
         static enum_map<Creature::KeywordFlags> creature_keyword_map;
         static enum_map<Creature::DamageTypeResilience> damage_type_resilience_map;
@@ -25,6 +26,7 @@ namespace DSDR
         static enum_map<Action::Distance> action_distance_map;
         static enum_map<Action::Resource> action_resource_map;
         static enum_map<Action::Activation> action_activation_map;
+        static enum_map<Action::Roll> action_roll_map;
 
         static enum_map<DamageType> damage_type_map;
         static enum_map<EffectEnd> effect_end_map;
@@ -55,6 +57,18 @@ namespace DSDR
 
     template<>
     Creature::DamageTypeResilience convert_str_to_enum(std::string_view in_str);
+
+    template<>
+    Creature::Characteristic convert_str_to_enum(std::string_view in_str);
+
+    template<>
+    Action::Roll convert_str_to_enum(std::string_view in_str);
+
+    template<>
+    Action::Distance convert_str_to_enum(std::string_view in_str);
+
+    template<>
+    Action::KeywordFlags convert_str_to_enum(std::string_view in_str);
 
     Creature::Size convert_char_to_enum(const char in_char);
 }

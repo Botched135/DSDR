@@ -27,6 +27,13 @@ namespace DSDR
         role_map["solo"] = Creature::Role::Solo;
         role_map["support"] = Creature::Role::Support;
 
+        // Characteristics
+        characteristics_map["might"] = Creature::Characteristic::Might;
+        characteristics_map["agility"] = Creature::Characteristic::Agility;
+        characteristics_map["reason"] = Creature::Characteristic::Reason;
+        characteristics_map["intuition"] = Creature::Characteristic::Inuition;
+        characteristics_map["presence"] = Creature::Characteristic::Presence;
+
         // Condition
         condition_map["none"]        = Creature::ConditionFlags::None;
         condition_map["bleeding"]    = Creature::ConditionFlags::Bleeding;
@@ -129,6 +136,9 @@ namespace DSDR
         action_activation_map["start_of_encounter"] = Action::Activation::StartOfEncounter;
         action_activation_map["special"]            = Action::Activation::Special;
 
+        action_roll_map["power"] = Action::Roll::Power;
+        action_roll_map["test"] = Action::Roll::Test;
+
         // Damage Types
         damage_type_map["acid"]       = DamageType::Acid;
         damage_type_map["cold"]       = DamageType::Cold;
@@ -174,6 +184,30 @@ namespace DSDR
     Creature::DamageTypeResilience convert_str_to_enum(std::string_view in_str)
     {
         return damage_type_resilience_map[in_str];
+    }
+
+    template<>
+    Action::Roll convert_str_to_enum(std::string_view in_str)
+    {
+        return action_roll_map[in_str];
+    }
+
+    template<>
+    Creature::Characteristic convert_str_to_enum(std::string_view in_str)
+    {
+        return characteristics_map[in_str];
+    }
+
+    template<>
+    Action::Distance convert_str_to_enum(std::string_view in_str)
+    {
+        return action_distance_map[in_str];
+    }
+
+    template<>
+    Action::KeywordFlags convert_str_to_enum(std::string_view in_str)
+    {
+        return action_keyword_map[in_str];
     }
 
     Creature::Size convert_char_to_enum(const char in_char)

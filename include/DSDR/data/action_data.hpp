@@ -1,19 +1,15 @@
 #pragma once
 #include "DSDR/data/ds_enums.hpp"
 #include <string>
+#include <variant>
 
 namespace DSDR
 {
-    struct PowerRoll
-    {
-        Action::Roll m_roll = Action::Roll::Power;
-        u8 m_damage;
-    };
-
+    using RollVariant = std::variant<std::monostate, i8, Creature::Characteristic>;
     struct Potency
     {
         Creature::Characteristic m_test_characteristic;
-        u8 m_resist_threshold;
+        i8 m_resist_threshold;
         std::string m_effect;
 
     };
@@ -41,7 +37,7 @@ namespace DSDR
     struct ActionEntry
     {
         std::string m_name;
-        std::string m_power_roll;
+        RollVariant m_roll; // use get<static_cast<u32>(m_roll)> to get the relevant type
         u16 m_keywords = static_cast<u16>(Action::KeywordFlags::None);
         Range m_range;
         std::string m_target;

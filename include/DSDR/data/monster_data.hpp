@@ -7,7 +7,14 @@
 
 namespace DSDR
 {
-    using resilience_array = std::array<u16, static_cast<u32>(Creature::DamageTypeResilience::ENUM_COUNT)>; // The eight lower bits are weakness, the upper are weakness 
+    struct Resilience
+    {
+        u8 m_immunity;
+        u8 m_weakness;
+    };
+
+    using resilience_array = std::array<Resilience, static_cast<u32>(Creature::DamageTypeResilience::ENUM_COUNT)>;
+
     struct Size
     {
         u8 m_space = 1;

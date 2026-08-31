@@ -43,7 +43,7 @@ namespace DSDR
                 {
                     auto& immunity = *entry.as_table();
                     const u32 index = static_cast<u32>(convert_str_to_enum<Creature::DamageTypeResilience>(extract_str(immunity["type"])));
-                    result[index] |= extract_val<u8>(immunity["value"]) << 8;
+                    result[index].m_immunity = extract_val<u8>(immunity["value"]);
                 }
             }
 
@@ -53,12 +53,64 @@ namespace DSDR
                 {   
                     auto& weakness = *entry.as_table();
                     const u32 index = static_cast<u32>(convert_str_to_enum<Creature::DamageTypeResilience>(extract_str(weakness["type"])));
-                    result[index] |= extract_val<u8>(weakness["value"]);
+                    result[index].m_weakness = extract_val<u8>(weakness["value"]);
                 }
             }
 
             return result;
         }
+
+        RollVariant handle_roll(const node_view& in_roll)
+        {
+            if(auto* roll_tbl = in_roll.as_table())
+            {
+                toml::table& roll_entry = *roll_tbl;
+                Action::Roll roll_type = convert_str_to_enum<Action::Roll>(extract_str(roll_entry["type"]));
+
+                switch (roll_type)
+                {
+                case Action::Roll::Power:
+                    return {extract_val<i8>(roll_entry["bonus"])};
+                case Action::Roll::Test:
+                    return {convert_str_to_enum<Creature::Characteristic>(extract_str(roll_entry["characteristic"]))};
+                default:
+                    return {};
+                }
+            }
+            return {};
+        }
+
+        Range handle_range(const node_view& in_range)
+        {
+            if(toml::table* range = in_range.as_table())
+            {
+                auto& range_tbl = *range;
+
+                return { convert_str_to_enum<Action::Distance>(extract_str(range_tbl["type"])), 
+                        extract_val<u16>(range_tbl["length"]),
+                        extract_val_or<u16>(range_tbl["width"], 0u)};
+            }
+            return {};
+        }
+
+        std::vector<ActionEntry> handle_actions(const node_view& in_actions)
+        {
+            std::vector<ActionEntry> result;
+            if(toml::array* actions = in_actions.as_array())
+            {
+                actions->for_each([](auto&& entry)
+                {
+                    auto& action_tbl = *entry.as_table();
+
+                    std::string name = extract_val<std::string>(action_tbl);
+                    RollVariant roll = handle_roll(action_tbl["roll"]);
+                    u16 keyword_flags = extract_flags<Action::KeywordFlags>(action_tbl["tags"]);
+                    Range range = handle_range(action_tbl["range"]);
+                });
+            }
+
+            return result;
+        } 
     }
 
     i32 load_monster_from_file(const std::filesystem::path& in_file_path)
@@ -86,30 +138,30 @@ namespace DSDR
                 monsters->for_each([](auto&& entry)
                 {
                     // TODO: the exception that is thrown needs to be useful
-                    auto& table_entry = *entry.as_table();
+                    auto& monster_tbl = *entry.as_table();
                     // each of them are tables
-                    std::string_view name = extract_val<std::string_view>(table_entry["name"]);
-                    Creature::Organization org = convert_str_to_enum<Creature::Organization>(extract_str(table_entry["creature_org"]));
-                    Creature::Role role = convert_str_to_enum<Creature::Role>(extract_str(table_entry["creature_role"]));
-                    u16 encounter_value = extract_val<u16>(table_entry["encounter_value"]); // No defaults
-                    i16 death = table_entry["death"].value_or(0);
-                    u32 types = extract_flags<Creature::KeywordFlags>(table_entry["types"]);
-                    u16 level = extract_val<u16>(table_entry["level"]);
-                    Size size = handle_size(table_entry["size"]);
-                    u16 speed = extract_val<u16>(table_entry["speed"]);
-                    u16 stamina = extract_val<u16>(table_entry["stamina"]);
-                    u16 stability = extract_val<u16>(table_entry["stability"]);
-                    u16 free_strike = extract_val<u16>(table_entry["free_strike"]);
+                    std::string name = extract_val<std::string>(monster_tbl["name"]);
+                    Creature::Organization org = convert_str_to_enum<Creature::Organization>(extract_str(monster_tbl["creature_org"]));
+                    Creature::Role role = convert_str_to_enum<Creature::Role>(extract_str(monster_tbl["creature_role"]));
+                    u16 encounter_value = extract_val<u16>(monster_tbl["encounter_value"]); // No defaults
+                    i16 death = monster_tbl["death"].value_or(0);
+                    u32 types = extract_flags<Creature::KeywordFlags>(monster_tbl["types"]);
+                    u16 level = extract_val<u16>(monster_tbl["level"]);
+                    Size size = handle_size(monster_tbl["size"]);
+                    u16 speed = extract_val<u16>(monster_tbl["speed"]);
+                    u16 stamina = extract_val<u16>(monster_tbl["stamina"]);
+                    u16 stability = extract_val<u16>(monster_tbl["stability"]);
+                    u16 free_strike = extract_val<u16>(monster_tbl["free_strike"]);
                     
-                    resilience_array resilience = handle_damage_type_resilience(table_entry["immunity"], table_entry["weakness"]);
+                    resilience_array resilience = handle_damage_type_resilience(monster_tbl["immunity"], monster_tbl["weakness"]);
                     
-                    u16 movement = extract_flags<Creature::MovementFlags>(table_entry["movement"]);
+                    u16 movement = extract_flags<Creature::MovementFlags>(monster_tbl["movement"]);
                     
-                    Characteristics characteristics = handle_characteristics(table_entry["characteristics"]);
+                    Characteristics characteristics = handle_characteristics(monster_tbl["characteristics"]);
 
-                    u16 turns_per_round = table_entry["turns_per_round"].value_or(1);
-                    u16 triggers_per_round = table_entry["triggers_per_round"].value_or(1);
-                    EndEffect end_effect = handle_end_effect(table_entry["end_effect"]);
+                    u16 turns_per_round = monster_tbl["turns_per_round"].value_or(1);
+                    u16 triggers_per_round = monster_tbl["triggers_per_round"].value_or(1);
+                    EndEffect end_effect = handle_end_effect(monster_tbl["end_effect"]);
 
                     // Abilities
                     // Villian_actions
