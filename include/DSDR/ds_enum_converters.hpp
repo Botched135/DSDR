@@ -42,6 +42,9 @@ namespace DSDR
     T convert_str_to_enum(std::string_view in_str) = delete;
 
     template<typename T>
+    T convert_str_to_enum_or(std::string_view in_str, const T in_default) = delete;
+
+    template<typename T>
     std::string convert_enum_to_str(T in_enum) = delete;
 
     template<>
@@ -76,6 +79,9 @@ namespace DSDR
 
     template<> 
     Action::Type convert_str_to_enum(std::string_view in_str);
+
+    template<>
+    DamageType convert_str_to_enum(std::string_view in_str);
 
     Creature::Size convert_char_to_enum(const char in_char);
 }

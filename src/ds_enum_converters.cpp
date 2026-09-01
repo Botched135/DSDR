@@ -228,6 +228,12 @@ namespace DSDR
         return targeting_flag_map[in_str];
     }
 
+    template<>
+    DamageType convert_str_to_enum(std::string_view in_str)
+    {
+        return damage_type_map[in_str];
+    }
+
 
 
     Creature::Size convert_char_to_enum(const char in_char)

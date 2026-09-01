@@ -2,6 +2,7 @@
 #include "DSDR/data/ds_enums.hpp"
 #include <string>
 #include <variant>
+#include <vector>
 
 namespace DSDR
 {
@@ -9,7 +10,9 @@ namespace DSDR
     struct Potency // removing the effect from potency as that should be part of the Outcome 
     {
         Creature::Characteristic m_test_characteristic;
+        std::string m_effect;
         i8 m_resist_threshold;
+
 
     };
 
@@ -51,14 +54,13 @@ namespace DSDR
     {
         std::string m_name;
         RollVariant m_roll; // use get<static_cast<u32>(m_roll)> to get the relevant type
+        // use index() to figure what type of roll it is
         u16 m_keywords = static_cast<u16>(Action::KeywordFlags::None);
         Range m_range;
         std::string m_target;
         Action::Type m_type = Action::Type::Main;
         std::string m_trigger;
-        Outcome m_low_tier; // possibily add this to effect and slice it up with string_views 
-        Outcome m_medium_tier;
-        Outcome m_high_tier;
+        std::vector<Outcome> outcomes;
         std::string m_effect;
         std::string m_special;
         ResourceCost m_resource_cost;

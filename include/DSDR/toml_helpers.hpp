@@ -53,6 +53,20 @@ namespace DSDR
         return convert_str_to_enum<T>(extract_str_lowcase(in_node));
     }
 
+    
+    template<typename T>
+    T extract_enum_from_str_or(const node_view& in_node_view, const T in_default)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node_view));
+    }
+
+    template<typename T>
+    T extract_enum_from_str_or(const toml::node& in_node, const T in_default)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node));
+    }
+
+
     template<typename T, unsigned_int U = u32>
     U extract_flags(const node_view& in_node_view)
     {
