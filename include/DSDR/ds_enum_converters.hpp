@@ -30,6 +30,7 @@ namespace DSDR
 
         static enum_map<DamageType> damage_type_map;
         static enum_map<EffectEnd> effect_end_map;
+        static enum_map<TargetingFlags> targeting_flag_map;
     }
 
 
@@ -69,6 +70,12 @@ namespace DSDR
 
     template<>
     Action::KeywordFlags convert_str_to_enum(std::string_view in_str);
+
+    template<>
+    TargetingFlags convert_str_to_enum(std::string_view in_str);
+
+    template<> 
+    Action::Type convert_str_to_enum(std::string_view in_str);
 
     Creature::Size convert_char_to_enum(const char in_char);
 }

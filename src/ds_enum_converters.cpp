@@ -154,6 +154,12 @@ namespace DSDR
         effect_end_map["end_of_turn"]      = EffectEnd::EndOfTurn;
         effect_end_map["save_ends"]        = EffectEnd::SaveEnds;
         effect_end_map["end_of_encounter"] = EffectEnd::EndOfEncounter;
+
+        targeting_flag_map["creature"]  = TargetingFlags::Creature;
+        targeting_flag_map["object"]    = TargetingFlags::Object;
+        targeting_flag_map["enemy"]     = TargetingFlags::Enemy;
+        targeting_flag_map["ally"]      = TargetingFlags::Ally;
+        targeting_flag_map["self"]      = TargetingFlags::Self;
     }
 
     template<>
@@ -209,6 +215,20 @@ namespace DSDR
     {
         return action_keyword_map[in_str];
     }
+
+    template<> 
+    Action::Type convert_str_to_enum(std::string_view in_str)
+    {
+        return action_type_map[in_str];
+    }
+
+    template<>
+    TargetingFlags convert_str_to_enum(std::string_view in_str)
+    {
+        return targeting_flag_map[in_str];
+    }
+
+
 
     Creature::Size convert_char_to_enum(const char in_char)
     {

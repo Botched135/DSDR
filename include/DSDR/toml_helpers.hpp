@@ -1,6 +1,7 @@
 #pragma once 
 #include <toml++/toml.hpp>
 #include "DSDR/data/monster_data.hpp"
+#include "DSDR/data/action_data.hpp"
 #include "DSDR/ds_enum_converters.hpp"
 #include "DSDR/utility/concepts.hpp"
 #include "DSDR/utility/algorithms.hpp"
@@ -29,16 +30,28 @@ namespace DSDR
     }
 
 
-    std::string extract_str(const node_view& in_node_view)
+    std::string extract_str_lowcase(const node_view& in_node_view)
     {
         return lower_case(in_node_view.template value<std::string>().value());   
     }
 
-    std::string extract_str(const toml::node& in_node)
+    std::string extract_str_lowcase(const toml::node& in_node)
     {
         return lower_case(in_node.template value<std::string>().value());   
     }
 
+
+    template<typename T>
+    T extract_enum_from_str(const node_view& in_node_view)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node_view));
+    }
+
+    template<typename T>
+    T extract_enum_from_str(const toml::node& in_node)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node));
+    }
 
     template<typename T, unsigned_int U = u32>
     U extract_flags(const node_view& in_node_view)
@@ -48,7 +61,7 @@ namespace DSDR
         {
             for(auto&& elem : *flag_array)
             {   
-                result |= static_cast<U>(convert_str_to_enum<T>(extract_str(elem)));
+                result |= static_cast<U>(extract_enum_from_str<T>(elem));
             }
         }
 

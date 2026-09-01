@@ -6,11 +6,10 @@
 namespace DSDR
 {
     using RollVariant = std::variant<std::monostate, i8, Creature::Characteristic>;
-    struct Potency
+    struct Potency // removing the effect from potency as that should be part of the Outcome 
     {
         Creature::Characteristic m_test_characteristic;
         i8 m_resist_threshold;
-        std::string m_effect;
 
     };
 
@@ -33,6 +32,20 @@ namespace DSDR
         u16 m_duration = 0;
         bool m_is_individual = true;
     };
+    
+    struct Targeting
+    {
+        u16 m_target_flags = 0;
+        u16 m_count = 0;
+    };
+
+    struct Outcome
+    {
+        u16 m_damage = 0;
+        DamageType m_damage_type = DamageType::None;
+        Potency m_potency;
+        std::string m_effect;
+    };
 
     struct ActionEntry
     {
@@ -43,9 +56,9 @@ namespace DSDR
         std::string m_target;
         Action::Type m_type = Action::Type::Main;
         std::string m_trigger;
-        std::string m_low_tier; // possibily add this to effect and slice it up with string_views 
-        std::string m_medium_tier;
-        std::string m_high_tier;
+        Outcome m_low_tier; // possibily add this to effect and slice it up with string_views 
+        Outcome m_medium_tier;
+        Outcome m_high_tier;
         std::string m_effect;
         std::string m_special;
         ResourceCost m_resource_cost;

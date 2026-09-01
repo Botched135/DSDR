@@ -1,11 +1,13 @@
 #include "DSDR/database/monster_db.hpp"
 #include "DSDR/data/monster_data.hpp"
+#include "DSDR/data/action_data.hpp"
 #include "DSDR/ds_enum_converters.hpp"
 #include "DSDR/toml_helpers.hpp"
 #include <fmt/core.h>
 #include <toml++/toml.hpp>
 #include <iostream>
 #include <string_view>
+#include <stacktrace>
 
 namespace DSDR
 {
@@ -15,7 +17,7 @@ namespace DSDR
     {
         Size handle_size(const node_view& in_node_view)
         {
-            std::string size_str = extract_str(in_node_view);
+            std::string size_str = extract_str_lowcase(in_node_view);
             std::size_t pos = 0;
             i32 space = std::stoi(size_str, &pos);
 
@@ -42,7 +44,7 @@ namespace DSDR
                 for(auto&& entry : *immunities)
                 {
                     auto& immunity = *entry.as_table();
-                    const u32 index = static_cast<u32>(convert_str_to_enum<Creature::DamageTypeResilience>(extract_str(immunity["type"])));
+                    const u32 index = static_cast<u32>(extract_enum_from_str<Creature::DamageTypeResilience>(immunity["type"]));
                     result[index].m_immunity = extract_val<u8>(immunity["value"]);
                 }
             }
@@ -52,7 +54,7 @@ namespace DSDR
                 for(auto&& entry : *weaknesses)
                 {   
                     auto& weakness = *entry.as_table();
-                    const u32 index = static_cast<u32>(convert_str_to_enum<Creature::DamageTypeResilience>(extract_str(weakness["type"])));
+                    const u32 index = static_cast<u32>(extract_enum_from_str<Creature::DamageTypeResilience>(weakness["type"]));
                     result[index].m_weakness = extract_val<u8>(weakness["value"]);
                 }
             }
@@ -65,14 +67,14 @@ namespace DSDR
             if(auto* roll_tbl = in_roll.as_table())
             {
                 toml::table& roll_entry = *roll_tbl;
-                Action::Roll roll_type = convert_str_to_enum<Action::Roll>(extract_str(roll_entry["type"]));
+                Action::Roll roll_type = extract_enum_from_str<Action::Roll>(roll_entry["type"]);
 
                 switch (roll_type)
                 {
                 case Action::Roll::Power:
                     return {extract_val<i8>(roll_entry["bonus"])};
                 case Action::Roll::Test:
-                    return {convert_str_to_enum<Creature::Characteristic>(extract_str(roll_entry["characteristic"]))};
+                    return {extract_enum_from_str<Creature::Characteristic>(roll_entry["characteristic"])};
                 default:
                     return {};
                 }
@@ -86,31 +88,57 @@ namespace DSDR
             {
                 auto& range_tbl = *range;
 
-                return { convert_str_to_enum<Action::Distance>(extract_str(range_tbl["type"])), 
-                        extract_val<u16>(range_tbl["length"]),
+                return { extract_enum_from_str<Action::Distance>(range_tbl["type"]), 
+                        extract_val_or<u16>(range_tbl["length"], 0u),
                         extract_val_or<u16>(range_tbl["width"], 0u)};
             }
             return {};
         }
 
+        Targeting handle_targeting(const node_view& in_targeting)
+        {
+            auto& targeting_tbl = *(in_targeting.as_table());
+
+            return {extract_flags<TargetingFlags, u16>(targeting_tbl["type"]), extract_val_or<u16>(targeting_tbl["count"], 0)};
+        }
+
         std::vector<ActionEntry> handle_actions(const node_view& in_actions)
         {
-            std::vector<ActionEntry> result;
             if(toml::array* actions = in_actions.as_array())
             {
-                actions->for_each([](auto&& entry)
+                std::vector<ActionEntry> action_vec;
+                action_vec.reserve(actions->size());
+                
+                for(auto&& entry : *actions)
                 {
                     auto& action_tbl = *entry.as_table();
-
-                    std::string name = extract_val<std::string>(action_tbl);
+                    
+                    std::string name = extract_val<std::string>(action_tbl["name"]);
+                    fmt::print("Handling {}\n", name);
                     RollVariant roll = handle_roll(action_tbl["roll"]);
+                    fmt::print("Roll done\n");
                     u16 keyword_flags = extract_flags<Action::KeywordFlags>(action_tbl["tags"]);
+                    fmt::print("tags done\n");
                     Range range = handle_range(action_tbl["range"]);
-                });
+                    fmt::print("Range done\n");
+                    Targeting targeting = handle_targeting(action_tbl["targeting"]);
+                    fmt::print("Targeting done\n");
+                    Action::Type action_type = extract_enum_from_str<Action::Type>(action_tbl["action_type"]);
+                    fmt::print("action type done\n");
+                    bool is_signature = action_tbl["is_signature"].value_or(false);
+                    fmt::print("Is signature\n");
+                    // Cooldown
+                    
+                    //ResourceCost
+                }
+
+                return action_vec;
             }
 
-            return result;
+            return {};
         } 
+
+
     }
 
     i32 load_monster_from_file(const std::filesystem::path& in_file_path)
@@ -135,14 +163,14 @@ namespace DSDR
         {
             try
             {
-                monsters->for_each([](auto&& entry)
+                for(auto&& entry : *monsters)
                 {
                     // TODO: the exception that is thrown needs to be useful
                     auto& monster_tbl = *entry.as_table();
                     // each of them are tables
                     std::string name = extract_val<std::string>(monster_tbl["name"]);
-                    Creature::Organization org = convert_str_to_enum<Creature::Organization>(extract_str(monster_tbl["creature_org"]));
-                    Creature::Role role = convert_str_to_enum<Creature::Role>(extract_str(monster_tbl["creature_role"]));
+                    Creature::Organization org = extract_enum_from_str<Creature::Organization>(monster_tbl["creature_org"]);
+                    Creature::Role role = extract_enum_from_str<Creature::Role>(monster_tbl["creature_role"]);
                     u16 encounter_value = extract_val<u16>(monster_tbl["encounter_value"]); // No defaults
                     i16 death = monster_tbl["death"].value_or(0);
                     u32 types = extract_flags<Creature::KeywordFlags>(monster_tbl["types"]);
@@ -162,7 +190,7 @@ namespace DSDR
                     u16 turns_per_round = monster_tbl["turns_per_round"].value_or(1);
                     u16 triggers_per_round = monster_tbl["triggers_per_round"].value_or(1);
                     EndEffect end_effect = handle_end_effect(monster_tbl["end_effect"]);
-
+                    std::vector<ActionEntry> abilities = handle_actions(monster_tbl["abilities"]);
                     // Abilities
                     // Villian_actions
                     // malice_actions
@@ -174,10 +202,11 @@ namespace DSDR
 
                     
 
-                });
+                }
             }
             catch(std::bad_optional_access& ex)
             {
+                fmt::print("{}\n",std::to_string(std::stacktrace::current()));
                 fmt::print("{}\n", ex.what());
                 return -1;
             }

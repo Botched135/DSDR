@@ -186,7 +186,7 @@ namespace DSDR
     }
 
     // If the target count is 0 it is considered each target, so default to 0
-    enum class TargetFlags
+    enum class TargetingFlags
     {
         Creature = 1,
         Object = 1 << 1,
