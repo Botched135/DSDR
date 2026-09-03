@@ -102,18 +102,38 @@ namespace DSDR
             return {extract_flags<TargetingFlags, u16>(targeting_tbl["type"]), extract_val_or<u16>(targeting_tbl["count"], 0)};
         }
 
-        // TODO: Should potency be optional? That might be preferable for all that has a "default"
-        Potency extract_potency(const node_view& in_potency)
+
+        Damage extract_damage(const node_view& in_damage)
         {
-            if(toml::table* potency = in_potency.as_table())
+            if(auto* damage_ptr = in_damage.as_table())
             {
-                fmt::print("Potency\n");
-                auto& potency_tbl = *potency;
+                auto& damage_tbl = *damage_ptr;
+                return {extract_val_or<u16>(damage_tbl["amount"],0),
+                        extract_enum_from_str_or<DamageType>(damage_tbl["type"], DamageType::None)
+                };
+            }
+            return {};
+        }
 
-                return {extract_enum_from_str<Creature::Characteristic>(potency_tbl["characteristic"]),
+        // TODO: Should potency be optional? That might be preferable for all that has a "default"
+        std::vector<Potency> extract_potencies(const node_view& in_potencies)
+        {
+            if(auto* potencies = in_potencies.as_array())
+            {
+                std::vector<Potency> results;
+                results.reserve(potencies->size());
+                for(auto&& entry : *potencies)
+                {
+                    auto& potency_tbl = *entry.as_table(); 
+                    results.emplace_back
+                    (
+                        extract_enum_from_str<Creature::Characteristic>(potency_tbl["characteristic"]),
+                        extract_damage(potency_tbl["damage"]),
                         extract_val<std::string>(potency_tbl["effect"]),
-                        extract_val<i8>(potency_tbl["resist"])};
-
+                        extract_val<i8>(potency_tbl["resist"]),
+                        extract_val_or<bool>(potency_tbl["replace_effect"], false)
+                    );
+                }
             }
             return {};
         }
@@ -130,15 +150,25 @@ namespace DSDR
                     auto& outcome_tbl = *entry.as_table();
                     fmt::print("Outcomes\n");
                     result.emplace_back(
-                        extract_val<u16>(outcome_tbl["damage"]),
-                        extract_enum_from_str<DamageType>(outcome_tbl["damage_type"]),
-                        extract_potency(outcome_tbl["potency"]),
-                        extract_val<std::string>(outcome_tbl["effect"])
+                        extract_damage(outcome_tbl["damage"]),
+                        extract_potencies(outcome_tbl["potencies"]),
+                        extract_val_or<std::string>(outcome_tbl["effect"], "")
                     );
                 }
             }
 
             return{};
+        }
+
+        Cooldown extract_cooldown(const node_view& in_cooldown)
+        {
+            if(toml::table* cooldown = in_cooldown.as_table())
+            {
+                auto& cooldown_tbl = *cooldown;
+                return {extract_val<i16>(cooldown_tbl["duration"]), extract_val_or<bool>(cooldown_tbl["global"], false)};
+            }
+
+            return {};
         }
 
         std::vector<ActionEntry> extract_actions(const node_view& in_actions)
@@ -171,9 +201,7 @@ namespace DSDR
                     
                     // outcomes are ordered after tier on what the relevant character rolls. So for tests, it is the first outcome that has highest damage and reverse for power roll
                     std::vector<Outcome> outcomes = extract_outcomes(action_tbl["outcomes"]);
-                    // Cooldown
-                    
-                    //ResourceCost
+                    Cooldown cooldown = extract_cooldown(action_tbl["cooldown"]);
                 }
 
                 return action_vec;
