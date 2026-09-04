@@ -232,7 +232,7 @@ namespace DSDR
                     
                     // outcomes are ordered after tier on what the relevant character rolls. So for tests, it is the first outcome that has highest damage and reverse for power roll
                     std::vector<Outcome> outcomes = extract_outcomes(action_tbl["outcomes"]);
-                    std::vector<Effect> additional_effects;
+                    std::vector<Effect> additional_effects = extract_effects(action_tbl["effects"]);
                     Cooldown cooldown = extract_cooldown(action_tbl["cooldown"]);
                     MaliceCost malice_cost = extract_malice_cost(action_tbl["malice_cost"]);
                     std::string special = extract_val_or<std::string>(action_tbl["special"], "");
