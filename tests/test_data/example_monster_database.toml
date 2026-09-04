@@ -31,9 +31,9 @@ abilities=[
 { name = "Blade of the Gol King", roll={type="power", bonus=5}, tags = ["Charge", "Magic", "Melee", "Strike"], range={type = "Melee", length=1}, targeting={ type=["creature", "object"], count=2}, action_type="Main", is_signature=true, outcomes=[{damage=16, damage_type="none", potencies=[{characteristic="might", resist=4, effect="target loses 1d3 Recoveries"}]}, {damage=22, damage_type="none", potencies=[{characteristic="might", resist=5, effect="target loses 1d3 Recoveries"}]}, {damage=16, damage_type="none", potencies=[{characteristic="might", resist=6, effect="target knocked prone and loses 1d3 Recoveries"}]}], effect="Ajax shifts up to 2 squares between striking each target", malice_cost={min_cost=1, max_cost=-1, effect="Ajax can strike one additional target for each Malice spent"}}, 
 { name = "Who's Hesitating?", trigger = "A creature uses the Hesitation is Weakness ability", range={ type="Self"}, targeting={type=["self"]}, action_type = "trigger", effect="Ajax shifts up to his speed and can make a free strike. If the target has R<4, this free strike also makes them wekened until the end of their next turn."}]
 villian_actions = [ 
-{ name = "Phoenix Wing King", roll={type="power", bonus=5}, tags = ["Area", "Magic", "Weapon"], range={type="Burst", length=5}, targeting={type=["enemy"], count = -1}, outcomes=[{damage=11, damage_type="fire", potentcy={characteristic="agility", resist=4, effect="target weakened (save ends)"}}, {damage=16, type="fire", potentcy={characteristic="agility", resist=5, effect="target weakened (save ends)"}}, {damage=21, type="fire", potentcy={characteristic="agility", resist=6, effect="target weakened (save ends)"}}], effect="Ajax flies at high speed to cut through each target, then appears in an unoccupied space within distance"},
-{ name = "I've Learned Their Tricks", range = {type="Burst", length = 3}, target = "Each enemy in the area", effect= "Ajax uses the shadow elf eclipse's technique to reduce each target's surges to 0. Additionally, until end of the round, Ajax ignores edges and double edges on any target's abilities, and ignores any nondamaging effects of any target's damage-dealing abilities.", special="This villian action can be replaced with a villian action from a creature any target has previously encountered"},
-{ name = "Awe of the Iron Crown", tags = ["Area", "Magic"], range={type="Burst", length=7}, targeting={type=["enemy"], count=-1}, effect= "Each target who has I<5 is knocked prone and can't stand until Ajax deals damage to them. For each target not knocked prone, Ajax can move up to his speed toward that target and use Blade of the Gol King against them"}]
+{ name = "Phoenix Wing King", roll={type="power", bonus=5}, tags = ["Area", "Magic", "Weapon"], range={type="Burst", length=5}, action_type="Villian", targeting={type=["enemy"], count = -1}, outcomes=[{damage=11, damage_type="fire", potencies=[{characteristic="agility", resist=4, effect="target weakened (save ends)"}]}, {damage=16, type="fire", potencies=[{characteristic="agility", resist=5, effect="target weakened (save ends)"}]}, {damage=21, type="fire", potencies=[{characteristic="agility", resist=6, effect="target weakened (save ends)"}]}], effect="Ajax flies at high speed to cut through each target, then appears in an unoccupied space within distance"},
+{ name = "I've Learned Their Tricks", range = {type="Burst", length = 3}, action_type="Villian", targeting={type=["self"]}, effect="Ajax uses the shadow elf eclipse's technique to reduce each target's surges to 0. Additionally, until end of the round, Ajax ignores edges and double edges on any target's abilities, and ignores any nondamaging effects of any target's damage-dealing abilities.", special="This villian action can be replaced with a villian action from a creature any target has previously encountered"},
+{ name = "Awe of the Iron Crown", tags = ["Area", "Magic"], action_type="Villian", range={type="Burst", length=7}, targeting={type=["enemy"], count=-1}, effect= "Each target who has I<5 is knocked prone and can't stand until Ajax deals damage to them. For each target not knocked prone, Ajax can move up to his speed toward that target and use Blade of the Gol King against them"}]
 malice_actions = [] # Solo monsters does not get Malice actions from their group
 traits = [
 	{ name = "Tactical Stance", condition="StartOfRound", effect="Switch stances between"},
@@ -55,11 +55,11 @@ stability=0
 free_strike=1
 immunity=[{type="Corruption", value=1},{type="Poison", value=1}]
 movement=["Climb"]
-captain_bonus="+2 bonus to speed"
+with_captain="+2 bonus to speed"
 characteristics = { might = 0, agility = 2, reason = -5, intuition = -1, presence = -1}
 abilities=[
  {name = "Fingernails", roll={type="power", bonus=2}, tags=["Melee", "Strike", "Weapon"], range={type="Melee", length=1}, targeting={type=["creature", "object"], count=1}, action_type ="Main", is_signature=true, outcomes=[{damage=1}, {damage=2}, {damage=3}], effect="The crawling claw shifts up to a number of squares equal to damage dealt."} ]
-Traits = [
+traits = [
   { name = "Disorganized", effect="Allies can't flank with the crawling claw."}]
 
 

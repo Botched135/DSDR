@@ -74,7 +74,7 @@ namespace DSDR
         // use index() to figure what type of roll it is
         u16 m_keywords = static_cast<u16>(Action::KeywordFlags::None);
         Range m_range;
-        std::string m_target;
+        Targeting m_targeting;
         Action::Type m_type = Action::Type::Main;
         std::string m_trigger;
         std::vector<Outcome> m_outcomes;

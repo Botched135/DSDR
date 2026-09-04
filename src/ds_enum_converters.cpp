@@ -111,6 +111,8 @@ namespace DSDR
         action_type_map["trigger"]        = Action::Type::Trigger;
         action_type_map["free_maneuver"]  = Action::Type::FreeManuever;
         action_type_map["free_trigger"]   = Action::Type::FreeTrigger;
+        action_type_map["villian"]        = Action::Type::Villian;
+        action_type_map["malice"]         = Action::Type::Malice;
 
         // Action Distance
         action_distance_map["melee"]          = Action::Distance::Melee;

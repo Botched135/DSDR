@@ -99,7 +99,8 @@ namespace DSDR
         {
             auto& targeting_tbl = *(in_targeting.as_table());
 
-            return {extract_flags<TargetingFlags, u16>(targeting_tbl["type"]), extract_val_or<u16>(targeting_tbl["count"], 0)};
+            return {extract_flags<TargetingFlags, u16>(targeting_tbl["type"]), 
+                    extract_val_or<u16>(targeting_tbl["count"], 0)};
         }
 
 
@@ -171,7 +172,44 @@ namespace DSDR
             return {};
         }
 
-        std::vector<ActionEntry> extract_actions(const node_view& in_actions)
+        MaliceCost extract_malice_cost(const node_view& in_malice_cost)
+        {
+            if(auto* malice_cost = in_malice_cost.as_table())
+            {
+                auto& malice_cost_tbl = *malice_cost;
+                
+                return { extract_val_or<u16>(malice_cost_tbl["base_cost"], 0),
+                         extract_val_or<u16>(malice_cost_tbl["max_cost"], 0),
+                         extract_val_or<u16>(malice_cost_tbl["step_cost"],0)
+
+                };
+            }
+            return {};
+        }
+        std::vector<Effect> extract_effects(const node_view& in_effects)
+        {
+            if(auto* effects = in_effects.as_array())
+            {
+                std::vector<Effect> result;
+                result.reserve(effects->size());
+                for(auto&& entry : *effects)
+                {
+                    auto& effect = *entry.as_table();
+                    result.emplace_back(
+                        extract_malice_cost(effect["malice_cost"]),
+                        extract_damage(effect["damage"]),
+                        extract_potencies(effect["potencies"]),
+                        extract_val<std::string>(effect["effect"])
+                    );
+                }
+
+                return result;
+            }
+
+            return {};
+        }
+
+        std::vector<ActionEntry> extract_actions(const node_view& in_actions, const Action::Type in_default = Action::Type::Main)
         {
             if(toml::array* actions = in_actions.as_array())
             {
@@ -183,25 +221,39 @@ namespace DSDR
                     auto& action_tbl = *entry.as_table();
                     
                     std::string name = extract_val<std::string>(action_tbl["name"]);
-                    fmt::print("Handling {}\n", name);
                     RollVariant roll = extract_roll(action_tbl["roll"]);
-                    fmt::print("Roll done\n");
                     u16 keyword_flags = extract_flags<Action::KeywordFlags>(action_tbl["tags"]);
-                    fmt::print("tags done\n");
                     Range range = extract_range(action_tbl["range"]);
-                    fmt::print("Range done\n");
                     Targeting targeting = extract_targeting(action_tbl["targeting"]);
-                    fmt::print("Targeting done\n");
-                    Action::Type action_type = extract_enum_from_str<Action::Type>(action_tbl["action_type"]);
-                    fmt::print("action type done\n");
+                    Action::Type action_type = extract_enum_from_str_or<Action::Type>(action_tbl["action_type"], in_default);
                     bool is_signature = action_tbl["is_signature"].value_or(false);
-                    fmt::print("Is signature\n");
                     
                     bool tiers_required =!std::holds_alternative<std::monostate>(roll);
                     
                     // outcomes are ordered after tier on what the relevant character rolls. So for tests, it is the first outcome that has highest damage and reverse for power roll
                     std::vector<Outcome> outcomes = extract_outcomes(action_tbl["outcomes"]);
+                    std::vector<Effect> additional_effects;
                     Cooldown cooldown = extract_cooldown(action_tbl["cooldown"]);
+                    MaliceCost malice_cost = extract_malice_cost(action_tbl["malice_cost"]);
+                    std::string special = extract_val_or<std::string>(action_tbl["special"], "");
+                    std::string trigger = extract_val_or<std::string>(action_tbl["trigger"], "");
+
+                    action_vec.emplace_back
+                    (
+                        name,
+                        roll,
+                        keyword_flags,
+                        range,
+                        targeting,
+                        action_type,
+                        trigger,
+                        std::move(outcomes),
+                        special,
+                        malice_cost,
+                        std::move(additional_effects),
+                        cooldown,
+                        is_signature
+                    );
                 }
 
                 return action_vec;
@@ -210,10 +262,31 @@ namespace DSDR
             return {};
         } 
 
+        std::vector<Trait> extract_traits(const node_view& in_traits)
+        {
+            if(auto* traits_ptr = in_traits.as_array())
+            {
+                std::vector<Trait> result;
+                result.reserve(traits_ptr->size());
+
+                for(auto&& entry : *traits_ptr)
+                {
+                    auto& trait_tbl = *entry.as_table();
+                    result.emplace_back(
+                        extract_val<std::string>(trait_tbl["name"]),
+                        extract_val<std::string>(trait_tbl["effect"]));
+                }
+
+                return result;
+            }
+
+            return {};
+        }
+
 
     }
 
-    i32 load_monster_from_file(const std::filesystem::path& in_file_path)
+    i32 load_monster_from_toml(const std::filesystem::path& in_file_path)
     {
         if(in_file_path.extension() != s_toml_ext) return 0;
         
@@ -263,15 +336,41 @@ namespace DSDR
                     u16 triggers_per_round = monster_tbl["triggers_per_round"].value_or(1);
                     EndEffect end_effect = extract_end_effect(monster_tbl["end_effect"]);
                     std::vector<ActionEntry> abilities = extract_actions(monster_tbl["abilities"]);
-                    // Abilities
-                    // Villian_actions
-                    // malice_actions
-                    // traits 
-                    // Captain bonus
+                    std::vector<ActionEntry> villian_actions = extract_actions(monster_tbl["villian_actions"], Action::Type::Villian);
+                    std::vector<ActionEntry> malice_actions = extract_actions(monster_tbl["malice_actions"], Action::Type::Malice);
+                    std::vector<Trait> traits = extract_traits(monster_tbl["traits"]);
+                    std::string captain_bonus = extract_val_or<std::string>(monster_tbl["with_captain"], "");
 
                     fmt::print("Done with {}\n", name);
                     
 
+
+                    MonsterEntry monster
+                    {
+                        name,
+                        "",
+                        org,
+                        role,
+                        types,
+                        encounter_value,
+                        death,
+                        level,
+                        size,
+                        speed,
+                        stability,
+                        stamina,
+                        free_strike,
+                        captain_bonus,
+                        resilience,
+                        characteristics,
+                        turns_per_round,
+                        triggers_per_round,
+                        end_effect,
+                        std::move(abilities),
+                        std::move(villian_actions),
+                        std::move(malice_actions),
+                        std::move(traits)
+                    };
                     
 
                 }

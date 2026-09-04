@@ -40,7 +40,9 @@ namespace DSDR
     {
         // No bloody idea of what to put in here
         //Trait::Condition m_condition;
-        std::string m_special_condition;
+        std::string m_name;
+        std::string m_effect;
+        //std::string m_special_condition;
         // figure out some fancy way of the traits having an effect on everything
     };
 
@@ -52,15 +54,15 @@ namespace DSDR
         Creature::Role m_role;
         u32 m_types = static_cast<u32>(Creature::KeywordFlags::None);
         u16 m_encounter_value = 0;
-        u16 m_death = 0;
-        u16 m_creature_keyword = 0;
+        i16 m_death = 0;
         u16 m_level = 1;
         Size m_size;
         u16 m_speed;
         u16 m_stability;
         u16 m_stamina;
         u16 m_free_strike;
-        i8 m_resilience[static_cast<u32>(Creature::DamageTypeResilience::ENUM_COUNT)]; // positive for immunity, negative for weakness
+        std::string m_captain_bonus;
+        resilience_array m_resilience;
         Characteristics m_characteristics;
         u16 m_turns_per_round = 1;
         u16 m_triggers_per_round = 1;
@@ -68,6 +70,6 @@ namespace DSDR
         std::vector<ActionEntry> m_abilities;
         std::vector<ActionEntry> m_villian_actions;
         std::vector<ActionEntry> m_malice_actions;
-        //std::vector<Trait> m_traits;
+        std::vector<Trait> m_traits;
     };
 }

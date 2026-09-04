@@ -67,6 +67,26 @@ namespace DSDR
     }
 
 
+    template<typename T>
+    std::vector<T> extract_array(const node_view& in_node_view)
+    {
+        if(auto* array_ptr = in_node_view.as_array())
+        {
+            std::vector<T> result;
+            result.reserve(array_ptr->size());
+            
+            for(auto&& entry : *array_ptr)
+            {
+                result.push_back(extract_val<T>(entry));
+            }
+
+            return result;
+        }
+
+        return {};
+    }
+
+
     template<typename T, unsigned_int U = u32>
     U extract_flags(const node_view& in_node_view)
     {

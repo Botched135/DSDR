@@ -151,7 +151,9 @@ namespace DSDR
             Movement,
             Trigger,
             FreeManuever,
-            FreeTrigger  
+            FreeTrigger,
+            Villian,
+            Malice
         };
 
         enum class Distance // Having the both area of effect and regular distance in one makes it so that the struct can hold two ints for range no matter the type and then use as many as it needs 

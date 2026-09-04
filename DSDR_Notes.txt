@@ -67,3 +67,8 @@ Calculate weakness first, then immunity
 
 Actions: what differ? Basically only placement. For villian actions, they have an order, but that is all placement 
 what should I do to differentiate between Malice base cost, extra cost and additional cost (1+ e.g.)
+
+TODO:
+Better name for effects to differentiate between non-damaging effects from outcome and effect of the attack
+Implement all the std::string value that current is. 
+Figure out the whole group/types thing
