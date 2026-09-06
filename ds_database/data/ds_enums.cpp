@@ -1,5 +1,4 @@
-#pragma once
-#include "DSDR/utility/type_defs.hpp"
+module dsdb;
 
 namespace DSDR
 {
@@ -178,6 +177,12 @@ namespace DSDR
             EndOfRound,
             StartOfEncounter,
             Special
+        };
+
+        enum class Resource
+        {
+            Heroic,
+            Malice
         };
     }
 
