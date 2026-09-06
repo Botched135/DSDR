@@ -1,10 +1,103 @@
-expoirt module dsdb:toml_extractors;
+export module dsdb:toml_extractors;
 
+import utility;
 import :converts;
 import :toml_helpers;
 
 export namespace DSDR
 {
+    template<typename T>
+    T extract_val(const toml::node_view& in_node_view)
+    {
+        return in_node_view.template value<T>().value();
+    }
+
+    template<typename T>
+    T extract_val(const toml::node& in_node)
+    {
+        return in_node.template value<T>().value();
+    }
+
+    
+    template<typename T>
+    T extract_val_or(const toml::node_view& in_node_view, T in_default)
+    {
+        return in_node_view.template value<T>().value_or(in_default);
+    }
+
+
+    std::string extract_str_lowcase(const toml::node_view& in_node_view)
+    {
+        return lower_case(in_node_view.template value<std::string>().value());   
+    }
+
+    std::string extract_str_lowcase(const toml::node& in_node)
+    {
+        return lower_case(in_node.template value<std::string>().value());   
+    }
+
+
+    template<typename T>
+    T extract_enum_from_str(const toml::node_view& in_node_view)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node_view));
+    }
+
+    template<typename T>
+    T extract_enum_from_str(const toml::node& in_node)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node));
+    }
+
+    
+    template<typename T>
+    T extract_enum_from_str_or(const toml::node_view& in_node_view, const T in_default)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node_view));
+    }
+
+    template<typename T>
+    T extract_enum_from_str_or(const toml::node& in_node, const T in_default)
+    {
+        return convert_str_to_enum<T>(extract_str_lowcase(in_node));
+    }
+
+
+    template<typename T>
+    std::vector<T> extract_array(const toml::node_view& in_node_view)
+    {
+        if(auto* array_ptr = in_node_view.as_array())
+        {
+            std::vector<T> result;
+            result.reserve(array_ptr->size());
+            
+            for(auto&& entry : *array_ptr)
+            {
+                result.push_back(extract_val<T>(entry));
+            }
+
+            return result;
+        }
+
+        return {};
+    }
+
+
+    template<typename T, unsigned_int U = u32>
+    U extract_flags(const toml::node_view& in_node_view)
+    {
+        U result = 0;
+        if(toml::array* flag_array = in_node_view.as_array())
+        {
+            for(auto&& elem : *flag_array)
+            {   
+                result |= static_cast<U>(extract_enum_from_str<T>(elem));
+            }
+        }
+
+        return result;
+    }
+
     Creature::Size extract_size(const toml::node_view& in_node_view)
     {
         std::string size_str = extract_str_lowcase(in_node_view);
@@ -139,7 +232,6 @@ export namespace DSDR
             for(auto&& entry : *outcomes)
             {
                 auto& outcome_tbl = *entry.as_table();
-                fmt::print("Outcomes\n");
                 result.emplace_back(
                     extract_damage(outcome_tbl["damage"]),
                     extract_potencies(outcome_tbl["potencies"]),

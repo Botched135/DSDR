@@ -1,8 +1,8 @@
 title = "Enemy Database"
 
 base_malice_actions = [
-{ name = "Brutal Effectiveness", min_cost = 3, effect = "The monster digs into the enemy's weak spot. The next ability the monster uses with a potency has that potency increased by 1."},
-{ name = "Malicious Strike", malice_cost={} min_cost=5, extra_cost=true, cooldown={global=true, count=2}, effect = "The monster pours all their animosity into their attack. their next strike deals extra damage to one target equal to the monster's highest characteristic score. the extra damage increases by 1 for each additional Malice spent on this feature (to a maximum of three times the monster's highest characteristic). This feature can't be used two rounds in a row, even by different monsters"} 
+{ name = "Brutal Effectiveness", malice_cost={base_cost=3}, effects =[{effect="The monster digs into the enemy's weak spot. The next ability the monster uses with a potency has that potency increased by 1."}]},
+{ name = "Malicious Strike", malice_cost={base_cost=5, step_cost=1}, cooldown={global=true, count=2}, effects=[{effect="The monster pours all their animosity into their attack. their next strike deals extra damage to one target equal to the monster's highest characteristic score. the extra damage increases by 1 for each additional Malice spent on this feature (to a maximum of three times the monster's highest characteristic). This feature can't be used two rounds in a row, even by different monsters"}]} 
 ]
 
 [[monsters]]

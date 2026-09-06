@@ -149,7 +149,6 @@ namespace DSDR
                 for(auto&& entry : *outcomes)
                 {
                     auto& outcome_tbl = *entry.as_table();
-                    fmt::print("Outcomes\n");
                     result.emplace_back(
                         extract_damage(outcome_tbl["damage"]),
                         extract_potencies(outcome_tbl["potencies"]),

@@ -24,7 +24,6 @@ namespace DSDR
         static enum_map<Action::KeywordFlags> action_keyword_map;
         static enum_map<Action::Type> action_type_map;
         static enum_map<Action::Distance> action_distance_map;
-        static enum_map<Action::Resource> action_resource_map;
         static enum_map<Action::Activation> action_activation_map;
         static enum_map<Action::Roll> action_roll_map;
 

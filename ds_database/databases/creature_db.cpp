@@ -49,11 +49,11 @@ namespace DSDR
                     u16 stability = extract_val<u16>(monster_tbl["stability"]);
                     u16 free_strike = extract_val<u16>(monster_tbl["free_strike"]);
                     
-                    resilience_array resilience = extract_damage_type_resilience(monster_tbl["immunity"], monster_tbl["weakness"]);
+                    Creature::resilience_array resilience = extract_damage_type_resilience(monster_tbl["immunity"], monster_tbl["weakness"]);
                     
                     u16 movement = extract_flags<Creature::MovementFlags>(monster_tbl["movement"]);
                     
-                    Characteristics characteristics = extract_characteristics(monster_tbl["characteristics"]);
+                    Creature::Characteristics characteristics = extract_characteristics(monster_tbl["characteristics"]);
 
                     u16 turns_per_round = monster_tbl["turns_per_round"].value_or(1);
                     u16 triggers_per_round = monster_tbl["triggers_per_round"].value_or(1);

@@ -1,8 +1,6 @@
-#pragma once
+module utility;
 
-#include <string>
-#include <algorithm>
-#include <cctype>
+import std;
 
 namespace DSDR
 {

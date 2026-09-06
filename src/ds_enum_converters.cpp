@@ -126,10 +126,6 @@ namespace DSDR
         action_distance_map["wall"]           = Action::Distance::Wall;
         action_distance_map["special"]        = Action::Distance::Special;
 
-        // Action Resource
-        action_resource_map["heroic"] = Action::Resource::Heroic;
-        action_resource_map["malice"] = Action::Resource::Malice;
-
         // Action Activation
         action_activation_map["start_of_turn"]      = Action::Activation::StartOfTurn;
         action_activation_map["end_of_turn"]        = Action::Activation::EndOfTurn;
