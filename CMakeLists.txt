@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 4.0)
 
 project(DSDR VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
@@ -36,6 +36,6 @@ target_sources(DSDR PRIVATE
 
 target_link_libraries(DSDR PUBLIC SDL3::SDL3 imgui fmt::fmt unordered_dense::unordered_dense tomlplusplus::tomlplusplus rapidfuzz::rapidfuzz)
 
-
+add_subdirectory(ds_database)
 add_subdirectory(director_retainer)
 add_subdirectory(tests)
