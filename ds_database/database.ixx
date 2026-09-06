@@ -1,4 +1,4 @@
-export dsdb;
+export module dsdb;
 
 import std;
 
