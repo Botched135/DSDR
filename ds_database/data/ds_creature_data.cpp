@@ -1,3 +1,4 @@
+#include "DSDR/utility/definitions.hpp"
 module dsdb;
 
 namespace DSDR
@@ -35,7 +36,7 @@ namespace DSDR
         {
             // No bloody idea of what to put in here
             //Trait::Condition m_condition;
-            std::string m_name;
+            char m_name[MAX_NAME_LEN];
             std::string m_effect;
             //std::string m_special_condition;
             // figure out some fancy way of the traits having an effect on everything
@@ -46,7 +47,7 @@ namespace DSDR
 
     struct MonsterEntry
     {
-        std::string m_name;
+        char m_name[MAX_NAME_LEN];
         std::string m_id; // not sure of this yet
         Creature::Organization m_org;
         Creature::Role m_role;

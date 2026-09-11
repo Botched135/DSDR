@@ -178,7 +178,7 @@ export namespace DSDR
         return {};
     }
 
-    Targeting extract_targeting(const toml::node_view& in_targeting)
+    Action::Targeting extract_targeting(const toml::node_view& in_targeting)
     {
         auto& targeting_tbl = *(in_targeting.as_table());
 
@@ -187,14 +187,22 @@ export namespace DSDR
     }
 
 
-    Damage extract_damage(const toml::node_view& in_damage)
+
+    std::vector<Action::Damage> extract_damage(const toml::node_view& in_damages)
     {
-        if(auto* damage_ptr = in_damage.as_table())
+        if(auto* damages = in_damages.as_array())
         {
-            auto& damage_tbl = *damage_ptr;
-            return {extract_val_or<u16>(damage_tbl["amount"],0),
+            std::vector<Action::Damage> results;
+            results.reserve(damages->size());
+            for(auto&& entry : *damages)
+            {
+                auto& damage_tbl = *entry.as_table(); 
+                results.emplace_back
+                (
+                    extract_val_or<u16>(damage_tbl["amount"],0),
                     extract_enum_from_str_or<DamageType>(damage_tbl["type"], DamageType::None)
-            };
+                );
+            }
         }
         return {};
     }
@@ -233,7 +241,7 @@ export namespace DSDR
             {
                 auto& outcome_tbl = *entry.as_table();
                 result.emplace_back(
-                    extract_damage(outcome_tbl["damage"]),
+                    extract_damage(outcome_tbl["damages"]),
                     extract_potencies(outcome_tbl["potencies"]),
                     extract_val_or<std::string>(outcome_tbl["effect"], "")
                 );
@@ -302,7 +310,8 @@ export namespace DSDR
             {
                 auto& action_tbl = *entry.as_table();
                 
-                std::string name = extract_val<std::string>(action_tbl["name"]);
+                char name[MAX_NAME_LEN];
+                std::strcpy(name, extract_val<std::string>(action_tbl["name"]).c_str());
                 Action::RollVariant roll = extract_roll(action_tbl["roll"]);
                 u16 keyword_flags = extract_flags<Action::KeywordFlags>(action_tbl["tags"]);
                 Action::Range range = extract_range(action_tbl["range"]);

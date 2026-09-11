@@ -1,6 +1,11 @@
+#include "DSDR/utility/definitions.hpp"
+
+#include <vector>
+#include <string>
+
 module dsdb;
 
-import std;
+
 
 namespace DSDR
 {
@@ -51,7 +56,7 @@ namespace DSDR
 
         struct Outcome
         {
-            Damage m_damage;
+            std::vector<Damage> m_damage;
             std::vector<Potency> m_potency;
             std::string m_effect;
         };
@@ -59,7 +64,7 @@ namespace DSDR
         struct Effect
         {
             MaliceCost m_malice_cost;
-            Damage m_damage;
+            std::vector<Damage> m_damage;
             std::vector<Potency> m_potencies;
             std::string m_effect;
         };
@@ -67,7 +72,7 @@ namespace DSDR
 
     struct ActionEntry
     {
-        std::string m_name;
+        char m_name[MAX_NAME_LEN];
         Action::RollVariant m_roll; // use get<static_cast<u32>(m_roll)> to get the relevant type
         // use index() to figure what type of roll it is
         u16 m_keywords = static_cast<u16>(Action::KeywordFlags::None);

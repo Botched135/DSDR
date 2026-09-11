@@ -36,7 +36,9 @@ namespace DSDR
                     // TODO: the exception that is thrown needs to be useful
                     auto& monster_tbl = *entry.as_table();
                     // each of them are tables
-                    std::string name = extract_val<std::string>(monster_tbl["name"]);
+                    char name[MAX_NAME_LEN];
+
+                    std::strcpy(name, extract_val<std::string>(monster_tbl["name"].c_str());
                     Creature::Organization org = extract_enum_from_str<Creature::Organization>(monster_tbl["creature_org"]);
                     Creature::Role role = extract_enum_from_str<Creature::Role>(monster_tbl["creature_role"]);
                     u16 encounter_value = extract_val<u16>(monster_tbl["encounter_value"]); // No defaults
