@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 4.0)
 
 #set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "a9e1cf81-9932-4810-974b-6eccaf14e457")
 
-
-
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS_RELEASE "/Ox") # This might only be for windows
 
 project(DSDR VERSION 0.0.1 LANGUAGES CXX)
@@ -42,6 +41,7 @@ target_sources(DSDR PRIVATE
 
 target_link_libraries(DSDR PUBLIC SDL3::SDL3 imgui fmt::fmt unordered_dense::unordered_dense tomlplusplus::tomlplusplus rapidfuzz::rapidfuzz)
 
+add_subdirectory(cpp_modules/ds_database)
 add_subdirectory(ds_database)
 add_subdirectory(director_retainer)
 add_subdirectory(tests)
