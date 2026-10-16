@@ -1,0 +1,9 @@
+Diagnostics:
+    UnusedIncludes: Strict
+    ClangTidy:
+        Add: [bugprone-*, modernize-*, performance-*]
+        Remove: [modernize-use-trailing-return-type]
+
+InlayHints:
+    ParameterNames: Yes
+    DeducedTypes: Yes

@@ -72,3 +72,7 @@ TODO:
 Better name for effects to differentiate between non-damaging effects from outcome and effect of the attack
 Implement all the std::string value that current is. 
 Figure out the whole group/types thing
+
+
+
+Use std::array<char, MAX_NAME_LEN> for keys

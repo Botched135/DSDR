@@ -1,6 +1,10 @@
-export module utility;
+module;
 
-import std;
+#include <string>
+#include <cstdint>
+#include <concepts>
+
+export module utility;
 
 export namespace DSDR
 {

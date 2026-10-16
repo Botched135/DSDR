@@ -1,6 +1,11 @@
+module;
+
+#include <string>
+#include <ranges>
+#include <algorithm>
+
 module utility;
 
-import std;
 
 namespace DSDR
 {

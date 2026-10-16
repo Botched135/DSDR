@@ -41,6 +41,7 @@ target_sources(DSDR PRIVATE
 
 target_link_libraries(DSDR PUBLIC SDL3::SDL3 imgui fmt::fmt unordered_dense::unordered_dense tomlplusplus::tomlplusplus rapidfuzz::rapidfuzz)
 
+add_subdirectory(cpp_modules/utility)
 add_subdirectory(cpp_modules/ds_database)
 add_subdirectory(ds_database)
 add_subdirectory(director_retainer)
